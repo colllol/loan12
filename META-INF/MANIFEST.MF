@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+MIDlet-Vendor: GiaiTri321.Pro
+MIDlet-Version: 1.0.0
+MIDlet-Delete-Confirm: Moi ban den voi wap giai tri www.giaitri321.pro
+MIDlet-1: Loan 12 Su Quan,/icon.png,com.mic.smsgame.suquan.SQMidlet
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-Name: Loan 12 Su Quan
+MicroEdition-Profile: MIDP-2.0
+
