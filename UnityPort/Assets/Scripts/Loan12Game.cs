@@ -17,6 +17,7 @@ public sealed class Loan12Game : MonoBehaviour
         PartnerLogo,
         MainMenu,
         HeroSelect,
+        StageSelect,
         Board,
         Shop,
         Records,
@@ -30,16 +31,16 @@ public sealed class Loan12Game : MonoBehaviour
     private readonly Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
     private readonly string[] menuItems =
     {
-        "strcontinuegame",
-        "strnewgame",
-        "strrecord",
-        "strshop",
-        "strinformation",
-        "strgivegame",
-        "strchatola",
-        "strothergame",
-        "strguide",
-        "strauthor"
+        "Tiep tuc",
+        "Game moi",
+        "Man choi",
+        "Ky luc",
+        "Cua hang",
+        "Thong tin",
+        "Tang game",
+        "Chien truong",
+        "Huong dan",
+        "Tac gia"
     };
 
     private readonly string[] shopNames =
@@ -152,6 +153,7 @@ public sealed class Loan12Game : MonoBehaviour
     private float stateStartedAt;
     private int selectedMenuItem;
     private int selectedShopItem;
+    private int selectedStage = 1;
     private int selectedHero;
     private int heroIndex;
     private bool selectingEndless;
@@ -185,6 +187,7 @@ public sealed class Loan12Game : MonoBehaviour
     private readonly List<Effect> effects = new List<Effect>();
     private int bestScore;
     private int bestLevel;
+    private int unlockedLevel = 1;
     private int[] inventory = new int[4];
     private string enemyName = "Tuong giac";
     private string message = "Chon 2 quan canh nhau de doi cho.";
@@ -226,7 +229,7 @@ public sealed class Loan12Game : MonoBehaviour
                 SaveGame();
                 SwitchTo(ScreenState.MainMenu);
             }
-            else if (state == ScreenState.HeroSelect || state == ScreenState.Shop || state == ScreenState.Records || state == ScreenState.Guide ||
+            else if (state == ScreenState.HeroSelect || state == ScreenState.StageSelect || state == ScreenState.Shop || state == ScreenState.Records || state == ScreenState.Guide ||
                 state == ScreenState.Information || state == ScreenState.Author || state == ScreenState.LinkPage ||
                 state == ScreenState.Result)
             {
@@ -249,6 +252,10 @@ public sealed class Loan12Game : MonoBehaviour
         else if (state == ScreenState.HeroSelect)
         {
             HandleHeroInput();
+        }
+        else if (state == ScreenState.StageSelect)
+        {
+            HandleStageInput();
         }
         else if (state == ScreenState.Shop)
         {
@@ -288,6 +295,9 @@ public sealed class Loan12Game : MonoBehaviour
                 break;
             case ScreenState.HeroSelect:
                 DrawHeroSelect();
+                break;
+            case ScreenState.StageSelect:
+                DrawStageSelect();
                 break;
             case ScreenState.Board:
                 DrawBoard();
@@ -367,6 +377,30 @@ public sealed class Loan12Game : MonoBehaviour
         }
     }
 
+    private void HandleStageInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            selectedStage = Mathf.Max(1, selectedStage - 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            selectedStage = Mathf.Min(MaxLevel + 1, selectedStage + 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            selectedStage = Mathf.Max(1, selectedStage - 4);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            selectedStage = Mathf.Min(MaxLevel + 1, selectedStage + 4);
+        }
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        {
+            ActivateStageSelection();
+        }
+    }
+
     private void DrawSplash(string name, bool drawUrl)
     {
         GUI.color = Color.white;
@@ -396,21 +430,18 @@ public sealed class Loan12Game : MonoBehaviour
         for (var i = 0; i < menuItems.Length; i++)
         {
             var focused = i == selectedMenuItem;
-            var texture = Load(menuItems[i] + (focused ? "focus" : string.Empty));
             var y = 78 + i * 21;
-            if (texture != null)
+            var rect = new Rect(34, y - 9, 172, 18);
+            if (focused)
             {
-                var rect = CenteredRect(texture, VirtualWidth / 2, y);
-                GUI.DrawTexture(rect, texture, ScaleMode.ScaleToFit, true);
-                if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
-                {
-                    selectedMenuItem = i;
-                    ActivateMenuItem(i);
-                }
+                DrawFocus(rect, "focusitem");
             }
-            else
+
+            GUI.Label(rect, menuItems[i], labelStyle);
+            if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
-                GUI.Label(new Rect(20, y - 10, 200, 22), menuItems[i], labelStyle);
+                selectedMenuItem = i;
+                ActivateMenuItem(i);
             }
         }
     }
@@ -451,6 +482,50 @@ public sealed class Loan12Game : MonoBehaviour
         GUI.Label(new Rect(20, 218, 200, 34), heroDescriptions[selectedHero], smallLabelStyle);
         GUI.Label(new Rect(20, 248, 200, 14), "HP " + heroBaseHealth[selectedHero] + " ATK " + heroBaseAttack[selectedHero] + " DEF " + heroBaseDefense[selectedHero] + " SK " + heroBaseSkillPower[selectedHero], smallLabelStyle);
         GUI.Label(new Rect(0, 268, VirtualWidth, 18), selectingEndless ? "Enter vao vo tan" : "Enter bat dau", smallLabelStyle);
+    }
+
+    private void DrawStageSelect()
+    {
+        DrawFull("bkmenu");
+        GUI.Label(new Rect(0, 20, VirtualWidth, 22), "Man choi", labelStyle);
+        GUI.Label(new Rect(16, 45, 208, 16), "Da mo: " + unlockedLevel + "/" + MaxLevel + "    Event: Vo tan", smallLabelStyle);
+
+        for (var i = 1; i <= MaxLevel; i++)
+        {
+            var index = i - 1;
+            var col = index % 4;
+            var row = index / 4;
+            var rect = new Rect(18 + col * 52, 68 + row * 20, 44, 16);
+            var unlocked = i <= unlockedLevel;
+            if (selectedStage == i)
+            {
+                DrawFocus(rect, "focusitem");
+            }
+
+            GUI.color = unlocked ? Color.white : new Color32(150, 150, 150, 255);
+            GUI.Label(rect, (IsBossLevel(i) ? "B" : "M") + i, smallLabelStyle);
+            GUI.color = Color.white;
+            if (unlocked && Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                selectedStage = i;
+                ActivateStageSelection();
+            }
+        }
+
+        var eventRect = new Rect(34, 252, 172, 18);
+        if (selectedStage == MaxLevel + 1)
+        {
+            DrawFocus(eventRect, "focusitem");
+        }
+
+        GUI.Label(eventRect, "Event: Chien truong vo tan", labelStyle);
+        if (Event.current.type == EventType.MouseDown && eventRect.Contains(Event.current.mousePosition))
+        {
+            selectedStage = MaxLevel + 1;
+            ActivateStageSelection();
+        }
+
+        GUI.Label(new Rect(0, 280, VirtualWidth, 16), "Enter de choi lai man da mo", smallLabelStyle);
     }
 
     private void DrawBoard()
@@ -533,19 +608,20 @@ public sealed class Loan12Game : MonoBehaviour
                 SwitchTo(ScreenState.HeroSelect);
                 break;
             case 2:
-                SwitchTo(ScreenState.Records);
+                selectedStage = Mathf.Min(Mathf.Max(1, level), MaxLevel);
+                SwitchTo(ScreenState.StageSelect);
                 break;
             case 3:
-                SwitchTo(ScreenState.Shop);
+                SwitchTo(ScreenState.Records);
                 break;
             case 4:
-                OpenTextPage(ScreenState.Information, "Thong tin", "Loan 12 Su Quan ban Unity port. Tai nguyen da convert tu J2ME, gameplay duoc dung lai cho man hinh 240x320 va iOS hien dai.");
+                SwitchTo(ScreenState.Shop);
                 break;
             case 5:
-                OpenTextPage(ScreenState.LinkPage, "Tang game", "Chuc nang tang game qua SMS/J2ME khong con phu hop tren Unity. Ban co the chia se ban build iOS/APK sau khi build.");
+                OpenTextPage(ScreenState.Information, "Thong tin", "Loan 12 Su Quan ban Unity port. Tai nguyen da convert tu J2ME, gameplay duoc dung lai cho man hinh 240x320 va iOS hien dai.");
                 break;
             case 6:
-                OpenTextPage(ScreenState.LinkPage, "Chat Ola", "Dich vu Chat Ola trong ban Java goc da cu. Unity port giu man nay nhu trang thong tin.");
+                OpenTextPage(ScreenState.LinkPage, "Tang game", "Chuc nang tang game qua SMS/J2ME khong con phu hop tren Unity. Ban co the chia se ban build iOS/APK sau khi build.");
                 break;
             case 7:
                 selectingEndless = true;
@@ -559,6 +635,26 @@ public sealed class Loan12Game : MonoBehaviour
                 OpenTextPage(ScreenState.Author, "Tac gia", "Game Java goc: Loan 12 Su Quan. Unity port trong repo nay giu lai asset goc va phuc dung gameplay offline.");
                 break;
         }
+    }
+
+    private void ActivateStageSelection()
+    {
+        if (selectedStage == MaxLevel + 1)
+        {
+            selectingEndless = true;
+            selectedHero = heroIndex;
+            SwitchTo(ScreenState.HeroSelect);
+            return;
+        }
+
+        if (selectedStage > unlockedLevel)
+        {
+            message = "Man nay chua mo.";
+            return;
+        }
+
+        StartReplayStage(selectedStage);
+        SwitchTo(ScreenState.Board);
     }
 
     private void SwitchTo(ScreenState next)
@@ -673,6 +769,22 @@ public sealed class Loan12Game : MonoBehaviour
         powerAttackTurns = inventory[5] > 0 ? 1 : 0;
         ginsengUsed = false;
         StartLevel(level);
+        SaveGame();
+    }
+
+    private void StartReplayStage(int stage)
+    {
+        endlessMode = false;
+        level = Mathf.Max(1, Mathf.Min(MaxLevel, stage));
+        score = 0;
+        mana = Mathf.Min(99, mana + 10);
+        ApplyHeroStats(false);
+        shieldTurns = 0;
+        frozenTurns = 0;
+        powerAttackTurns = inventory.Length > 5 && inventory[5] > 0 ? 1 : 0;
+        ginsengUsed = false;
+        StartLevel(level);
+        message = "Choi lai man " + level + ".";
         SaveGame();
     }
 
@@ -1000,6 +1112,7 @@ public sealed class Loan12Game : MonoBehaviour
             var rewardGold = 12 + level * 3 + (bossBattle ? 80 : 0);
             gold += rewardGold;
             AddHeroXp(rewardXp);
+            unlockedLevel = Mathf.Max(unlockedLevel, Mathf.Min(MaxLevel, level + 1));
             if (!endlessMode && level >= MaxLevel)
             {
                 DeleteSave();
@@ -1429,14 +1542,27 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void DrawAvatar(int index, Rect rect)
     {
-        var avatar = Load("avatar");
-        if (avatar == null)
+        var faceNames = new[]
+        {
+            "fireballicon",
+            "chainlightingicon",
+            "healingicon",
+            "hellfireicon",
+            "blastlightingicon",
+            "frozenicon",
+            "sword",
+            "defenceshield",
+            "meteoricon",
+            "icebolticon"
+        };
+        var face = Load(faceNames[ClampIndex(index, faceNames.Length)]);
+        if (face == null)
         {
             GUI.Box(rect, GUIContent.none);
             return;
         }
 
-        GUI.DrawTexture(rect, avatar, ScaleMode.ScaleToFit, true);
+        GUI.DrawTexture(rect, face, ScaleMode.ScaleToFit, true);
     }
 
     private void DrawEnemyFace(Rect rect)
@@ -1714,6 +1840,7 @@ public sealed class Loan12Game : MonoBehaviour
         PlayerPrefs.SetInt(SavePrefix + "HeroAttack", heroAttack);
         PlayerPrefs.SetInt(SavePrefix + "HeroDefense", heroDefense);
         PlayerPrefs.SetInt(SavePrefix + "HeroSkillPower", heroSkillPower);
+        PlayerPrefs.SetInt(SavePrefix + "UnlockedLevel", unlockedLevel);
         PlayerPrefs.SetInt(SavePrefix + "MaxHealth", maxHealth);
         PlayerPrefs.SetInt(SavePrefix + "Health", health);
         PlayerPrefs.SetInt(SavePrefix + "EnemyHealth", enemyHealth);
@@ -1753,6 +1880,7 @@ public sealed class Loan12Game : MonoBehaviour
         heroAttack = PlayerPrefs.GetInt(SavePrefix + "HeroAttack", heroBaseAttack[ClampIndex(heroIndex, heroBaseAttack.Length)]);
         heroDefense = PlayerPrefs.GetInt(SavePrefix + "HeroDefense", heroBaseDefense[ClampIndex(heroIndex, heroBaseDefense.Length)]);
         heroSkillPower = PlayerPrefs.GetInt(SavePrefix + "HeroSkillPower", heroBaseSkillPower[ClampIndex(heroIndex, heroBaseSkillPower.Length)]);
+        unlockedLevel = Mathf.Max(1, PlayerPrefs.GetInt(SavePrefix + "UnlockedLevel", unlockedLevel));
         maxHealth = PlayerPrefs.GetInt(SavePrefix + "MaxHealth", heroIndex == 2 || heroIndex == 5 ? 120 : 100);
         health = PlayerPrefs.GetInt(SavePrefix + "Health", maxHealth);
         enemyMaxHealth = PlayerPrefs.GetInt(SavePrefix + "EnemyMaxHealth", 45);
@@ -1799,6 +1927,7 @@ public sealed class Loan12Game : MonoBehaviour
     {
         bestScore = PlayerPrefs.GetInt(SavePrefix + "BestScore", 0);
         bestLevel = PlayerPrefs.GetInt(SavePrefix + "BestLevel", 0);
+        unlockedLevel = Mathf.Max(1, PlayerPrefs.GetInt(SavePrefix + "UnlockedLevel", Mathf.Max(1, bestLevel)));
     }
 
     private void UpdateRecords()
@@ -1812,6 +1941,7 @@ public sealed class Loan12Game : MonoBehaviour
         UpdateRecords();
         PlayerPrefs.SetInt(SavePrefix + "BestScore", bestScore);
         PlayerPrefs.SetInt(SavePrefix + "BestLevel", bestLevel);
+        PlayerPrefs.SetInt(SavePrefix + "UnlockedLevel", unlockedLevel);
     }
 
     private string SerializeBoard()
