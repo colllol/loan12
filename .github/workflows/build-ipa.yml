@@ -27,7 +27,7 @@ jobs:
             CONFIGURATION_BUILD_DIR=/tmp/build | xcpretty
 
           mkdir -p /tmp/Payload
-          cp -R /tmp/build/Unity-iPhone.app /tmp/Payload/
+          cp -R /tmp/build/Loan12SuQuan.app /tmp/Payload/
           cd /tmp && zip -r Unity-iPhone.ipa Payload/
 
       - name: Upload IPA
