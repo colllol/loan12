@@ -5,3 +5,5 @@
 - Em để cả Ghidra và file fdk luôn trong folder này, các bác lấy luôn dùng không phải tải nữa nhé. Cứ giải nén ra rồi dùng thôi
   
 ![image](https://github.com/user-attachments/assets/7a42b6d0-e94e-4fd3-a08d-81346c6d93ba)
+
+
