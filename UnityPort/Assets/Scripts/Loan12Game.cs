@@ -44,21 +44,41 @@ public sealed class Loan12Game : MonoBehaviour
 
     private readonly string[] shopNames =
     {
-        "Thuoc mau",
-        "Hoa phu",
-        "Khien",
-        "Doi the"
+        "Long Than Kiem",
+        "Nhan Sam",
+        "Ngan Luong",
+        "Quy Dien Giap",
+        "Binh Thuoc",
+        "Ngoc An"
     };
 
     private readonly string[] shopDescriptions =
     {
-        "Hoi 35 mau khi chien dau.",
-        "Gay sat thuong truc tiep.",
-        "Giam sat thuong 3 luot.",
-        "Xao lai ban co."
+        "Nhan doi suc tan cong trong 1 luot.",
+        "Nhan doi mau co ban trong tran.",
+        "Nhan them 1000 vang.",
+        "Chan 3/4 sat thuong trong 1 luot.",
+        "Hoi ngay 10% sinh luc.",
+        "Uu tien di truoc khi vao tran."
     };
 
-    private readonly int[] shopPrices = { 12, 18, 15, 8 };
+    private readonly int[] shopPrices = { 0, 0, 0, 1000, 250, 500 };
+    private readonly int[] shopAmounts = { 3, 3, 1000, 3, 3, 3 };
+
+    private readonly string[] skillNames =
+    {
+        "Qua Cau Lua",
+        "Mua Thien Thach",
+        "Lua Dia Nguc",
+        "Chui Set",
+        "Khien Set",
+        "Sam Set",
+        "Mui Ten Bang",
+        "Cam Lo Thuy",
+        "Bang Phong"
+    };
+
+    private readonly int[] skillCosts = { 10, 16, 22, 14, 18, 24, 12, 15, 20 };
 
     private readonly string[] enemyNames =
     {
@@ -130,6 +150,8 @@ public sealed class Loan12Game : MonoBehaviour
     private int enemyAttack;
     private int shieldTurns;
     private int frozenTurns;
+    private int powerAttackTurns;
+    private bool ginsengUsed;
     private readonly List<Effect> effects = new List<Effect>();
     private int bestScore;
     private int bestLevel;
@@ -430,11 +452,13 @@ public sealed class Loan12Game : MonoBehaviour
         }
 
         GUI.Label(new Rect(8, 242, 224, 18), message, smallLabelStyle);
-        GUI.Label(new Rect(8, 258, 224, 14), "Skill: 1 Lua  2 Hoi  3 Loi  4 Bang", smallLabelStyle);
-        DrawBoardAction(6, 274, 0, "H");
-        DrawBoardAction(64, 274, 1, "F");
-        DrawBoardAction(122, 274, 2, "S");
-        DrawBoardAction(180, 274, 3, "R");
+        GUI.Label(new Rect(8, 258, 224, 14), "Skill: phim 1-9", smallLabelStyle);
+        DrawBoardAction(6, 274, 0, "K");
+        DrawBoardAction(44, 274, 1, "S");
+        DrawBoardAction(82, 274, 2, "G");
+        DrawBoardAction(120, 274, 3, "A");
+        DrawBoardAction(158, 274, 4, "P");
+        DrawBoardAction(196, 274, 5, "N");
         GUI.Label(new Rect(6, 298, 72, 16), "Man " + level, smallLabelStyle);
         GUI.Label(new Rect(84, 298, 72, 16), "Di " + movesLeft, smallLabelStyle);
         GUI.Label(new Rect(162, 298, 72, 16), "Vang " + gold, smallLabelStyle);
@@ -479,7 +503,7 @@ public sealed class Loan12Game : MonoBehaviour
                 OpenTextPage(ScreenState.LinkPage, "Game khac", "Danh sach game khac cua nha phat hanh goc khong co du lieu offline trong repo nay.");
                 break;
             case 8:
-                OpenTextPage(ScreenState.Guide, "Huong dan", "Doi cho 2 quan canh nhau de tao hang 3 tro len. Kiem va am duong gay sat thuong, tim hoi mau, vang cong tien, sach tang mana. Phim H/F/S/R dung vat pham.");
+                OpenTextPage(ScreenState.Guide, "Huong dan", "Doi 2 quan canh nhau de tao hang 3 tro len. Phim 1-9 dung 9 ky nang. K/S/G/A/P/N dung 6 vat pham goc. Kiem va am duong gay sat thuong, tim hoi mau, vang cong tien, sach tang mana.");
                 break;
             case 9:
                 OpenTextPage(ScreenState.Author, "Tac gia", "Game Java goc: Loan 12 Su Quan. Unity port trong repo nay giu lai asset goc va phuc dung gameplay offline.");
@@ -568,8 +592,10 @@ public sealed class Loan12Game : MonoBehaviour
         health = maxHealth;
         shieldTurns = 0;
         frozenTurns = 0;
-        inventory = new[] { 1, 0, 0, 1 };
+        inventory = new[] { 1, 0, 0, 1, 1, 0 };
         effects.Clear();
+        powerAttackTurns = inventory[5] > 0 ? 1 : 0;
+        ginsengUsed = false;
         StartLevel(level);
         if (persist)
         {
@@ -617,21 +643,29 @@ public sealed class Loan12Game : MonoBehaviour
         {
             SelectCell(cursorX, cursorY);
         }
-        else if (Input.GetKeyDown(KeyCode.H))
+        else if (Input.GetKeyDown(KeyCode.K))
         {
             UseItem(0);
         }
-        else if (Input.GetKeyDown(KeyCode.F))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             UseItem(1);
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.G))
         {
             UseItem(2);
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             UseItem(3);
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            UseItem(4);
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            UseItem(5);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
@@ -648,6 +682,26 @@ public sealed class Loan12Game : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
         {
             UseSkill(3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            UseSkill(4);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+        {
+            UseSkill(5);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            UseSkill(6);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            UseSkill(7);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
+        {
+            UseSkill(8);
         }
     }
 
@@ -692,6 +746,11 @@ public sealed class Loan12Game : MonoBehaviour
 
         movesLeft--;
         var removed = ResolveMatches();
+        if (powerAttackTurns > 0)
+        {
+            powerAttackTurns--;
+        }
+
         EnemyTurn();
         CheckLevelState(removed);
         SaveGame();
@@ -734,11 +793,12 @@ public sealed class Loan12Game : MonoBehaviour
                 continue;
             }
 
+            var attackMultiplier = powerAttackTurns > 0 ? 2 : 1;
             score += count * 10 + chainBonus * 5;
             switch (i)
             {
                 case 0:
-                    enemyHealth -= count * (4 + chain + (heroIndex == 3 ? 1 : 0));
+                    enemyHealth -= count * (4 + chain + (heroIndex == 3 ? 1 : 0)) * attackMultiplier;
                     break;
                 case 1:
                     score += count * 6;
@@ -748,7 +808,7 @@ public sealed class Loan12Game : MonoBehaviour
                     break;
                 case 3:
                     mana = Mathf.Min(99, mana + count * (heroIndex == 1 ? 3 : 2));
-                    enemyHealth -= count * 2;
+                    enemyHealth -= count * 2 * attackMultiplier;
                     break;
                 case 4:
                     gold += count;
@@ -780,7 +840,7 @@ public sealed class Loan12Game : MonoBehaviour
         var damage = enemyAttack;
         if (shieldTurns > 0)
         {
-            damage = Mathf.Max(1, damage / 2);
+            damage = Mathf.Max(1, damage / 4);
             shieldTurns--;
         }
 
@@ -861,7 +921,7 @@ public sealed class Loan12Game : MonoBehaviour
             }
 
             GUI.Label(new Rect(26, y + 2, 116, 14), shopNames[i] + " x" + inventory[i], leftLabelStyle);
-            GUI.Label(new Rect(148, y + 2, 64, 14), shopPrices[i] + " vang", smallLabelStyle);
+            GUI.Label(new Rect(148, y + 2, 64, 14), shopPrices[i] > 0 ? shopPrices[i] + " vang" : "SMS", smallLabelStyle);
             GUI.Label(new Rect(26, y + 17, 184, 16), shopDescriptions[i], leftLabelStyle);
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
@@ -931,6 +991,22 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void BuyShopItem(int itemIndex)
     {
+        if (itemIndex <= 2)
+        {
+            if (itemIndex == 2)
+            {
+                gold += shopAmounts[itemIndex];
+                message = "Da nhan " + shopAmounts[itemIndex] + " vang.";
+                SaveGame();
+                return;
+            }
+
+            inventory[itemIndex] += shopAmounts[itemIndex];
+            message = "Da nhan " + shopNames[itemIndex] + " x" + shopAmounts[itemIndex] + ".";
+            SaveGame();
+            return;
+        }
+
         if (gold < shopPrices[itemIndex])
         {
             message = "Khong du vang de mua " + shopNames[itemIndex] + ".";
@@ -938,7 +1014,7 @@ public sealed class Loan12Game : MonoBehaviour
         }
 
         gold -= shopPrices[itemIndex];
-        inventory[itemIndex]++;
+        inventory[itemIndex] += shopAmounts[itemIndex];
         message = "Da mua " + shopNames[itemIndex] + ".";
         SaveGame();
     }
@@ -954,28 +1030,42 @@ public sealed class Loan12Game : MonoBehaviour
         switch (itemIndex)
         {
             case 0:
-                if (health >= 100)
+                powerAttackTurns = 1;
+                message = "Long Than Kiem san sang.";
+                break;
+            case 1:
+                if (ginsengUsed)
+                {
+                    message = "Nhan Sam chi dung 1 lan moi tran.";
+                    return;
+                }
+
+                ginsengUsed = true;
+                maxHealth *= 2;
+                health = maxHealth;
+                message = "Nhan Sam tang gap doi sinh luc.";
+                break;
+            case 2:
+                gold += 1000;
+                message = "Ngan Luong cong 1000 vang.";
+                break;
+            case 3:
+                shieldTurns = Mathf.Max(shieldTurns, 1);
+                message = "Quy Dien Giap chan don tiep theo.";
+                break;
+            case 4:
+                if (health >= maxHealth)
                 {
                     message = "Mau da day.";
                     return;
                 }
 
-                health = Mathf.Min(maxHealth, health + 35);
-                message = "Da hoi mau.";
+                health = Mathf.Min(maxHealth, health + Mathf.Max(1, maxHealth / 10));
+                message = "Binh Thuoc hoi 10% sinh luc.";
                 break;
-            case 1:
-                enemyHealth = Mathf.Max(0, enemyHealth - (30 + level * 5));
-                message = "Hoa phu danh trung " + enemyName + ".";
-                break;
-            case 2:
-                shieldTurns = 3;
-                message = "Khien bat trong 3 luot.";
-                break;
-            case 3:
-                CreateBoard();
-                EnsurePlayableBoard();
-                ClearSelection();
-                message = "Da xao lai ban co.";
+            case 5:
+                powerAttackTurns = Mathf.Max(powerAttackTurns, 1);
+                message = "Ngoc An giup uu tien tan cong.";
                 break;
         }
 
@@ -986,7 +1076,7 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void UseSkill(int skillIndex)
     {
-        var costs = new[] { 12, 10, 18, 15 };
+        var costs = (int[])skillCosts.Clone();
         if (heroIndex == 1 || heroIndex == 4)
         {
             costs[skillIndex] = Mathf.Max(5, costs[skillIndex] - 3);
@@ -1002,29 +1092,71 @@ public sealed class Loan12Game : MonoBehaviour
         switch (skillIndex)
         {
             case 0:
-                enemyHealth = Mathf.Max(0, enemyHealth - (25 + level * 4));
+                enemyHealth = Mathf.Max(0, enemyHealth - (20 + level * 4));
+                ClearArea(cursorX - 1, cursorY - 1, 3, 3);
                 AddScreenEffect("fireball", 48);
-                message = "Hoa cau gay sat thuong.";
+                message = skillNames[skillIndex] + ".";
                 break;
             case 1:
-                health = Mathf.Min(maxHealth, health + 28);
-                AddScreenEffect("healing", 48);
-                message = "Hoi phuc bang mana.";
+                enemyHealth = Mathf.Max(0, enemyHealth - (22 + level * 4));
+                for (var i = 0; i < Random.Range(3, 6); i++)
+                {
+                    ClearArea(Random.Range(0, BoardSize - 1), Random.Range(0, BoardSize - 1), 2, 2);
+                }
+                AddScreenEffect("meteoricon", 48);
+                message = skillNames[skillIndex] + ".";
                 break;
             case 2:
-                enemyHealth = Mathf.Max(0, enemyHealth - (18 + level * 3));
-                ClearCross(cursorX, cursorY);
-                ResolveMatches();
-                AddScreenEffect("chainlighting", 48);
-                message = "Loi kich pha ban co.";
+                enemyHealth = Mathf.Max(0, enemyHealth - (30 + level * 5));
+                ClearArea(0, 0, 4, 4);
+                ClearArea(BoardSize - 4, BoardSize - 4, 4, 4);
+                AddScreenEffect("hellfire", 48);
+                message = skillNames[skillIndex] + ".";
                 break;
             case 3:
+                enemyHealth = Mathf.Max(0, enemyHealth - (16 + level * 3));
+                ClearRandomCells(Random.Range(4, 9));
+                AddScreenEffect("chainlighting", 48);
+                message = skillNames[skillIndex] + ".";
+                break;
+            case 4:
+                shieldTurns = 6;
+                AddScreenEffect("shieldlighting", 48);
+                message = skillNames[skillIndex] + " trong 6 luot.";
+                break;
+            case 5:
+                enemyHealth = Mathf.Max(0, enemyHealth - (28 + level * 4));
+                for (var i = 0; i < Random.Range(3, 7); i++)
+                {
+                    ClearArea(Random.Range(0, BoardSize - 2), Random.Range(0, BoardSize - 2), 3, 3);
+                }
+                AddScreenEffect("blastlighting", 48);
+                message = skillNames[skillIndex] + ".";
+                break;
+            case 6:
+                enemyHealth = Mathf.Max(0, enemyHealth - (14 + level * 3));
+                enemyAttack = Mathf.Max(1, enemyAttack - 2);
+                AddScreenEffect("icebolt", 48);
+                message = skillNames[skillIndex] + ".";
+                break;
+            case 7:
+                health = Mathf.Min(maxHealth, health + Mathf.Max(1, maxHealth / 5));
+                ClearAllPiece(2);
+                ResolveMatches();
+                AddScreenEffect("healing", 48);
+                message = skillNames[skillIndex] + ".";
+                break;
+            case 8:
                 frozenTurns = heroIndex == 5 ? 3 : 2;
+                enemyHealth = Mathf.Max(0, enemyHealth - (18 + level * 4));
+                enemyAttack = Mathf.Max(1, enemyAttack - 4);
                 AddScreenEffect("frozen", 48);
-                message = "Dong bang doi thu 2 luot.";
+                message = skillNames[skillIndex] + ".";
                 break;
         }
 
+        CollapseBoard();
+        ResolveMatches();
         CheckLevelState(1);
         SaveGame();
     }
@@ -1041,6 +1173,48 @@ public sealed class Loan12Game : MonoBehaviour
         ApplyRewards(removedByType, 1);
         CollapseBoard();
         EnsurePlayableBoard();
+    }
+
+    private void ClearArea(int startX, int startY, int width, int height)
+    {
+        var removedByType = new int[pieces.Length];
+        for (var y = Mathf.Max(0, startY); y < Mathf.Min(BoardSize, startY + height); y++)
+        {
+            for (var x = Mathf.Max(0, startX); x < Mathf.Min(BoardSize, startX + width); x++)
+            {
+                CountAndClear(x, y, removedByType);
+            }
+        }
+
+        ApplyRewards(removedByType, 1);
+    }
+
+    private void ClearRandomCells(int count)
+    {
+        var removedByType = new int[pieces.Length];
+        for (var i = 0; i < count; i++)
+        {
+            CountAndClear(Random.Range(0, BoardSize), Random.Range(0, BoardSize), removedByType);
+        }
+
+        ApplyRewards(removedByType, 1);
+    }
+
+    private void ClearAllPiece(int pieceType)
+    {
+        var removedByType = new int[pieces.Length];
+        for (var y = 0; y < BoardSize; y++)
+        {
+            for (var x = 0; x < BoardSize; x++)
+            {
+                if (board[x, y] == pieceType)
+                {
+                    CountAndClear(x, y, removedByType);
+                }
+            }
+        }
+
+        ApplyRewards(removedByType, 1);
     }
 
     private void CountAndClear(int x, int y, int[] removedByType)
@@ -1359,6 +1533,8 @@ public sealed class Loan12Game : MonoBehaviour
         PlayerPrefs.SetInt(SavePrefix + "EnemyAttack", enemyAttack);
         PlayerPrefs.SetInt(SavePrefix + "ShieldTurns", shieldTurns);
         PlayerPrefs.SetInt(SavePrefix + "FrozenTurns", frozenTurns);
+        PlayerPrefs.SetInt(SavePrefix + "PowerAttackTurns", powerAttackTurns);
+        PlayerPrefs.SetInt(SavePrefix + "GinsengUsed", ginsengUsed ? 1 : 0);
         for (var i = 0; i < inventory.Length; i++)
         {
             PlayerPrefs.SetInt(SavePrefix + "Item" + i, inventory[i]);
@@ -1390,6 +1566,8 @@ public sealed class Loan12Game : MonoBehaviour
         enemyAttack = PlayerPrefs.GetInt(SavePrefix + "EnemyAttack", 8);
         shieldTurns = PlayerPrefs.GetInt(SavePrefix + "ShieldTurns", 0);
         frozenTurns = PlayerPrefs.GetInt(SavePrefix + "FrozenTurns", 0);
+        powerAttackTurns = PlayerPrefs.GetInt(SavePrefix + "PowerAttackTurns", 0);
+        ginsengUsed = PlayerPrefs.GetInt(SavePrefix + "GinsengUsed", 0) == 1;
         enemyName = enemyNames[ClampIndex(level - 1, enemyNames.Length)];
         for (var i = 0; i < inventory.Length; i++)
         {
