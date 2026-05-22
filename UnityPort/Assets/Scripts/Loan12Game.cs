@@ -8,7 +8,7 @@ public sealed class Loan12Game : MonoBehaviour
     private const int VirtualHeight = 320;
     private const int BoardSize = 7;
     private const int EmptyPiece = -1;
-    private const int MaxLevel = 12;
+    private const int MaxLevel = 36;
     private const string SavePrefix = "Loan12.";
 
     private enum ScreenState
@@ -96,6 +96,15 @@ public sealed class Loan12Game : MonoBehaviour
         "Dinh Bo Linh"
     };
 
+    private readonly string[] bossNames =
+    {
+        "Thien Tuong Hoa Lu",
+        "Than Long Ho Ve",
+        "Loi Kiem Tien Nhan",
+        "Bac Hai Long Vuong",
+        "Dinh Tien Hoang"
+    };
+
     private readonly string[] heroNames =
     {
         "Hoa hau",
@@ -103,7 +112,11 @@ public sealed class Loan12Game : MonoBehaviour
         "Thuy long",
         "Hoa phuong",
         "Nu loi",
-        "Bac hai"
+        "Bac hai",
+        "Kiem khach",
+        "Ho ve",
+        "Phap su",
+        "Xa thu"
     };
 
     private readonly string[] heroDescriptions =
@@ -113,8 +126,17 @@ public sealed class Loan12Game : MonoBehaviour
         "Sinh ton va hoi mau tot.",
         "Danh thuong manh hon.",
         "Ky nang set re hon.",
-        "Bang gia khong che lau hon."
+        "Bang gia khong che lau hon.",
+        "Tan cong co ban rat manh.",
+        "Phong thu va mau cao.",
+        "Ky nang manh hon.",
+        "Sat thuong chuan xac cao."
     };
+
+    private readonly int[] heroBaseHealth = { 100, 95, 120, 100, 95, 120, 105, 130, 90, 100 };
+    private readonly int[] heroBaseAttack = { 11, 9, 8, 12, 9, 8, 15, 8, 10, 13 };
+    private readonly int[] heroBaseDefense = { 2, 2, 4, 2, 2, 4, 2, 7, 1, 3 };
+    private readonly int[] heroBaseSkillPower = { 4, 5, 3, 4, 6, 4, 2, 2, 8, 3 };
 
     private readonly string[] pieces =
     {
@@ -132,6 +154,8 @@ public sealed class Loan12Game : MonoBehaviour
     private int selectedShopItem;
     private int selectedHero;
     private int heroIndex;
+    private bool selectingEndless;
+    private bool endlessMode;
     private int[,] board;
     private int cursorX;
     private int cursorY;
@@ -142,12 +166,18 @@ public sealed class Loan12Game : MonoBehaviour
     private int score;
     private int gold;
     private int mana;
+    private int heroLevel = 1;
+    private int heroXp;
+    private int heroAttack;
+    private int heroDefense;
+    private int heroSkillPower;
     private int health;
     private int maxHealth = 100;
     private int enemyHealth;
     private int enemyMaxHealth;
     private int targetScore;
     private int enemyAttack;
+    private bool bossBattle;
     private int shieldTurns;
     private int frozenTurns;
     private int powerAttackTurns;
@@ -324,7 +354,15 @@ public sealed class Loan12Game : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
             heroIndex = selectedHero;
-            StartNewGame();
+            if (selectingEndless)
+            {
+                StartEndlessGame();
+            }
+            else
+            {
+                StartNewGame();
+            }
+
             SwitchTo(ScreenState.Board);
         }
     }
@@ -380,30 +418,39 @@ public sealed class Loan12Game : MonoBehaviour
     private void DrawHeroSelect()
     {
         DrawFull("bkmenu");
-        GUI.Label(new Rect(0, 24, VirtualWidth, 22), "Chon tuong", labelStyle);
+        GUI.Label(new Rect(0, 24, VirtualWidth, 22), selectingEndless ? "Chien truong vo tan" : "Chon tuong", labelStyle);
         for (var i = 0; i < heroNames.Length; i++)
         {
-            var col = i % 3;
-            var row = i / 3;
-            var rect = new Rect(34 + col * 60, 62 + row * 72, 52, 58);
+            var col = i % 5;
+            var row = i / 5;
+            var rect = new Rect(10 + col * 44, 62 + row * 70, 40, 58);
             if (i == selectedHero)
             {
                 DrawFocus(new Rect(rect.x - 3, rect.y - 3, rect.width + 6, rect.height + 6), "focusitem");
             }
 
-            DrawAvatar(i, new Rect(rect.x + 11, rect.y + 4, 30, 30));
-            GUI.Label(new Rect(rect.x - 5, rect.y + 37, 62, 18), heroNames[i], smallLabelStyle);
+            DrawAvatar(i, new Rect(rect.x + 5, rect.y + 4, 30, 30));
+            GUI.Label(new Rect(rect.x - 5, rect.y + 37, 50, 18), heroNames[i], smallLabelStyle);
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
                 selectedHero = i;
                 heroIndex = selectedHero;
-                StartNewGame();
+                if (selectingEndless)
+                {
+                    StartEndlessGame();
+                }
+                else
+                {
+                    StartNewGame();
+                }
+
                 SwitchTo(ScreenState.Board);
             }
         }
 
         GUI.Label(new Rect(20, 218, 200, 34), heroDescriptions[selectedHero], smallLabelStyle);
-        GUI.Label(new Rect(0, 268, VirtualWidth, 18), "Enter chon, Esc ve menu", smallLabelStyle);
+        GUI.Label(new Rect(20, 248, 200, 14), "HP " + heroBaseHealth[selectedHero] + " ATK " + heroBaseAttack[selectedHero] + " DEF " + heroBaseDefense[selectedHero] + " SK " + heroBaseSkillPower[selectedHero], smallLabelStyle);
+        GUI.Label(new Rect(0, 268, VirtualWidth, 18), selectingEndless ? "Enter vao vo tan" : "Enter bat dau", smallLabelStyle);
     }
 
     private void DrawBoard()
@@ -481,6 +528,7 @@ public sealed class Loan12Game : MonoBehaviour
 
                 break;
             case 1:
+                selectingEndless = false;
                 selectedHero = heroIndex;
                 SwitchTo(ScreenState.HeroSelect);
                 break;
@@ -500,10 +548,12 @@ public sealed class Loan12Game : MonoBehaviour
                 OpenTextPage(ScreenState.LinkPage, "Chat Ola", "Dich vu Chat Ola trong ban Java goc da cu. Unity port giu man nay nhu trang thong tin.");
                 break;
             case 7:
-                OpenTextPage(ScreenState.LinkPage, "Game khac", "Danh sach game khac cua nha phat hanh goc khong co du lieu offline trong repo nay.");
+                selectingEndless = true;
+                selectedHero = heroIndex;
+                SwitchTo(ScreenState.HeroSelect);
                 break;
             case 8:
-                OpenTextPage(ScreenState.Guide, "Huong dan", "Doi 2 quan canh nhau de tao hang 3 tro len. Phim 1-9 dung 9 ky nang. K/S/G/A/P/N dung 6 vat pham goc. Kiem va am duong gay sat thuong, tim hoi mau, vang cong tien, sach tang mana.");
+                OpenTextPage(ScreenState.Guide, "Huong dan", "Campaign co " + MaxLevel + " man, boss moi 5 man. Muc Game khac mo Chien truong vo tan. Qua man nhan XP de tang level, mau, tan cong, phong thu va suc manh ky nang.");
                 break;
             case 9:
                 OpenTextPage(ScreenState.Author, "Tac gia", "Game Java goc: Loan 12 Su Quan. Unity port trong repo nay giu lai asset goc va phuc dung gameplay offline.");
@@ -584,11 +634,14 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void StartNewGame(bool persist = true)
     {
+        endlessMode = false;
         level = 1;
         score = 0;
         gold = 20;
         mana = 0;
-        maxHealth = heroIndex == 2 || heroIndex == 5 ? 120 : 100;
+        heroLevel = 1;
+        heroXp = 0;
+        ApplyHeroStats(true);
         health = maxHealth;
         shieldTurns = 0;
         frozenTurns = 0;
@@ -603,22 +656,102 @@ public sealed class Loan12Game : MonoBehaviour
         }
     }
 
+    private void StartEndlessGame()
+    {
+        endlessMode = true;
+        level = 1;
+        score = 0;
+        gold = 40;
+        mana = 20;
+        heroLevel = 1;
+        heroXp = 0;
+        ApplyHeroStats(true);
+        health = maxHealth;
+        shieldTurns = 0;
+        frozenTurns = 0;
+        inventory = new[] { 2, 1, 0, 1, 2, 1 };
+        powerAttackTurns = inventory[5] > 0 ? 1 : 0;
+        ginsengUsed = false;
+        StartLevel(level);
+        SaveGame();
+    }
+
     private void StartLevel(int nextLevel)
     {
         level = nextLevel;
-        enemyName = enemyNames[ClampIndex(level - 1, enemyNames.Length)];
-        enemyMaxHealth = 45 + (level - 1) * 28;
+        bossBattle = IsBossLevel(level);
+        enemyName = GetEnemyName(level);
+        enemyMaxHealth = (45 + (level - 1) * 28 + (endlessMode ? level * 8 : 0)) * (bossBattle ? 3 : 1);
         enemyHealth = enemyMaxHealth;
         targetScore = 180 + (level - 1) * 120;
-        movesLeft = Mathf.Max(16, 25 - level);
-        enemyAttack = 6 + level * 2;
+        movesLeft = endlessMode ? Mathf.Max(14, 24 - level / 4) : Mathf.Max(14, 27 - level / 2);
+        enemyAttack = (6 + level * 2 + (endlessMode ? level / 2 : 0)) * (bossBattle ? 2 : 1);
         cursorX = BoardSize / 2;
         cursorY = BoardSize / 2;
         ClearSelection();
         CreateBoard();
         EnsurePlayableBoard();
-        message = "Danh bai " + enemyName + ".";
+        message = (endlessMode ? "Dot " : "Man ") + level + ": danh bai " + enemyName + ".";
         effects.Clear();
+    }
+
+    private void ApplyHeroStats(bool fullHeal)
+    {
+        heroAttack = heroBaseAttack[ClampIndex(heroIndex, heroBaseAttack.Length)] + (heroLevel - 1) * 3;
+        heroDefense = heroBaseDefense[ClampIndex(heroIndex, heroBaseDefense.Length)] + (heroLevel - 1);
+        heroSkillPower = heroBaseSkillPower[ClampIndex(heroIndex, heroBaseSkillPower.Length)] + (heroLevel - 1) * 2;
+        maxHealth = heroBaseHealth[ClampIndex(heroIndex, heroBaseHealth.Length)] + (heroLevel - 1) * 14;
+        if (fullHeal)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health = Mathf.Min(maxHealth, health + Mathf.Max(8, maxHealth / 5));
+        }
+    }
+
+    private void AddHeroXp(int amount)
+    {
+        heroXp += amount;
+        var leveled = false;
+        while (heroXp >= XpForNextHeroLevel())
+        {
+            heroXp -= XpForNextHeroLevel();
+            heroLevel++;
+            leveled = true;
+        }
+
+        ApplyHeroStats(leveled);
+        if (leveled)
+        {
+            message += " Tuong len cap " + heroLevel + ".";
+        }
+    }
+
+    private int XpForNextHeroLevel()
+    {
+        return 80 + heroLevel * 35;
+    }
+
+    private bool IsBossLevel(int stage)
+    {
+        return stage % 5 == 0 || (!endlessMode && stage == MaxLevel);
+    }
+
+    private string GetEnemyName(int stage)
+    {
+        if (IsBossLevel(stage))
+        {
+            return bossNames[ClampIndex(stage / 5, bossNames.Length)];
+        }
+
+        if (endlessMode)
+        {
+            return "Tien nhan " + stage;
+        }
+
+        return enemyNames[(stage - 1) % enemyNames.Length];
     }
 
     private void HandleBoardInput()
@@ -798,7 +931,7 @@ public sealed class Loan12Game : MonoBehaviour
             switch (i)
             {
                 case 0:
-                    enemyHealth -= count * (4 + chain + (heroIndex == 3 ? 1 : 0)) * attackMultiplier;
+                    DamageEnemy(count * (heroAttack + chain + (heroIndex == 3 ? 2 : 0)) * attackMultiplier / 2);
                     break;
                 case 1:
                     score += count * 6;
@@ -808,7 +941,7 @@ public sealed class Loan12Game : MonoBehaviour
                     break;
                 case 3:
                     mana = Mathf.Min(99, mana + count * (heroIndex == 1 ? 3 : 2));
-                    enemyHealth -= count * 2 * attackMultiplier;
+                    DamageEnemy(count * Mathf.Max(2, heroAttack / 3) * attackMultiplier);
                     break;
                 case 4:
                     gold += count;
@@ -821,6 +954,17 @@ public sealed class Loan12Game : MonoBehaviour
         }
 
         enemyHealth = Mathf.Max(0, enemyHealth);
+    }
+
+    private void DamageEnemy(int amount)
+    {
+        enemyHealth = Mathf.Max(0, enemyHealth - Mathf.Max(1, amount));
+    }
+
+    private void DamagePlayer(int amount)
+    {
+        var damage = Mathf.Max(1, amount - heroDefense);
+        health = Mathf.Max(0, health - damage);
     }
 
     private void EnemyTurn()
@@ -844,7 +988,7 @@ public sealed class Loan12Game : MonoBehaviour
             shieldTurns--;
         }
 
-        health = Mathf.Max(0, health - damage);
+        DamagePlayer(damage);
     }
 
     private void CheckLevelState(int removed)
@@ -852,15 +996,19 @@ public sealed class Loan12Game : MonoBehaviour
         UpdateRecords();
         if (enemyHealth <= 0)
         {
-            if (level >= MaxLevel)
+            var rewardXp = 45 + level * 18 + (bossBattle ? 100 : 0) + (endlessMode ? level * 4 : 0);
+            var rewardGold = 12 + level * 3 + (bossBattle ? 80 : 0);
+            gold += rewardGold;
+            AddHeroXp(rewardXp);
+            if (!endlessMode && level >= MaxLevel)
             {
                 DeleteSave();
-                ShowResult("Thang loi", "Da hoan thanh 12 man. Diem " + score + ", vang " + gold + ".");
+                ShowResult("Thang loi", "Da hoan thanh " + MaxLevel + " man. Diem " + score + ", vang " + gold + ".");
                 return;
             }
 
             StartLevel(level + 1);
-            message = "Qua man. Bat dau man " + level + ".";
+            message = (endlessMode ? "Qua dot " : "Qua man ") + (level - 1) + ". +" + rewardXp + " XP, +" + rewardGold + " vang.";
             SaveGame();
             return;
         }
@@ -966,13 +1114,14 @@ public sealed class Loan12Game : MonoBehaviour
         GUI.Label(new Rect(32, 5, 84, 13), "Minh", leftLabelStyle);
         DrawBar(new Rect(32, 20, 84, 8), health, maxHealth, new Color32(40, 175, 75, 255));
         GUI.Label(new Rect(32, 30, 84, 12), health + "/" + maxHealth + "  M" + mana, smallLabelStyle);
+        GUI.Label(new Rect(32, 42, 84, 12), "Lv" + heroLevel + " XP " + heroXp + "/" + XpForNextHeroLevel(), smallLabelStyle);
 
         DrawEnemyFace(new Rect(210, 6, 24, 24));
         GUI.Label(new Rect(124, 5, 82, 13), enemyName, leftLabelStyle);
         DrawBar(new Rect(124, 20, 82, 8), enemyHealth, enemyMaxHealth, new Color32(190, 40, 40, 255));
         GUI.Label(new Rect(124, 30, 82, 12), "Dich " + enemyHealth + "/" + enemyMaxHealth, smallLabelStyle);
 
-        GUI.Label(new Rect(58, 42, 124, 12), "Diem " + score + "/" + targetScore, smallLabelStyle);
+        GUI.Label(new Rect(116, 42, 116, 12), "ATK " + heroAttack + " DEF " + heroDefense, smallLabelStyle);
     }
 
     private void DrawBoardAction(int x, int y, int itemIndex, string key)
@@ -1098,13 +1247,13 @@ public sealed class Loan12Game : MonoBehaviour
         switch (skillIndex)
         {
             case 0:
-                enemyHealth = Mathf.Max(0, enemyHealth - (20 + level * 4));
+                DamageEnemy(20 + level * 4 + heroSkillPower * 3);
                 ClearArea(cursorX - 1, cursorY - 1, 3, 3);
                 AddScreenEffect("fireball", 48);
                 message = skillNames[skillIndex] + ".";
                 break;
             case 1:
-                enemyHealth = Mathf.Max(0, enemyHealth - (22 + level * 4));
+                DamageEnemy(22 + level * 4 + heroSkillPower * 3);
                 for (var i = 0; i < Random.Range(3, 6); i++)
                 {
                     ClearArea(Random.Range(0, BoardSize - 1), Random.Range(0, BoardSize - 1), 2, 2);
@@ -1113,14 +1262,14 @@ public sealed class Loan12Game : MonoBehaviour
                 message = skillNames[skillIndex] + ".";
                 break;
             case 2:
-                enemyHealth = Mathf.Max(0, enemyHealth - (30 + level * 5));
+                DamageEnemy(30 + level * 5 + heroSkillPower * 4);
                 ClearArea(0, 0, 4, 4);
                 ClearArea(BoardSize - 4, BoardSize - 4, 4, 4);
                 AddScreenEffect("hellfire", 48);
                 message = skillNames[skillIndex] + ".";
                 break;
             case 3:
-                enemyHealth = Mathf.Max(0, enemyHealth - (16 + level * 3));
+                DamageEnemy(16 + level * 3 + heroSkillPower * 2);
                 ClearRandomCells(Random.Range(4, 9));
                 AddScreenEffect("chainlighting", 48);
                 message = skillNames[skillIndex] + ".";
@@ -1131,7 +1280,7 @@ public sealed class Loan12Game : MonoBehaviour
                 message = skillNames[skillIndex] + " trong 6 luot.";
                 break;
             case 5:
-                enemyHealth = Mathf.Max(0, enemyHealth - (28 + level * 4));
+                DamageEnemy(28 + level * 4 + heroSkillPower * 4);
                 for (var i = 0; i < Random.Range(3, 7); i++)
                 {
                     ClearArea(Random.Range(0, BoardSize - 2), Random.Range(0, BoardSize - 2), 3, 3);
@@ -1140,7 +1289,7 @@ public sealed class Loan12Game : MonoBehaviour
                 message = skillNames[skillIndex] + ".";
                 break;
             case 6:
-                enemyHealth = Mathf.Max(0, enemyHealth - (14 + level * 3));
+                DamageEnemy(14 + level * 3 + heroSkillPower * 2);
                 enemyAttack = Mathf.Max(1, enemyAttack - 2);
                 AddScreenEffect("icebolt", 48);
                 message = skillNames[skillIndex] + ".";
@@ -1154,7 +1303,7 @@ public sealed class Loan12Game : MonoBehaviour
                 break;
             case 8:
                 frozenTurns = heroIndex == 5 ? 3 : 2;
-                enemyHealth = Mathf.Max(0, enemyHealth - (18 + level * 4));
+                DamageEnemy(18 + level * 4 + heroSkillPower * 3);
                 enemyAttack = Mathf.Max(1, enemyAttack - 4);
                 AddScreenEffect("frozen", 48);
                 message = skillNames[skillIndex] + ".";
@@ -1559,6 +1708,12 @@ public sealed class Loan12Game : MonoBehaviour
         PlayerPrefs.SetInt(SavePrefix + "Gold", gold);
         PlayerPrefs.SetInt(SavePrefix + "Mana", mana);
         PlayerPrefs.SetInt(SavePrefix + "Hero", heroIndex);
+        PlayerPrefs.SetInt(SavePrefix + "Endless", endlessMode ? 1 : 0);
+        PlayerPrefs.SetInt(SavePrefix + "HeroLevel", heroLevel);
+        PlayerPrefs.SetInt(SavePrefix + "HeroXp", heroXp);
+        PlayerPrefs.SetInt(SavePrefix + "HeroAttack", heroAttack);
+        PlayerPrefs.SetInt(SavePrefix + "HeroDefense", heroDefense);
+        PlayerPrefs.SetInt(SavePrefix + "HeroSkillPower", heroSkillPower);
         PlayerPrefs.SetInt(SavePrefix + "MaxHealth", maxHealth);
         PlayerPrefs.SetInt(SavePrefix + "Health", health);
         PlayerPrefs.SetInt(SavePrefix + "EnemyHealth", enemyHealth);
@@ -1592,6 +1747,12 @@ public sealed class Loan12Game : MonoBehaviour
         gold = PlayerPrefs.GetInt(SavePrefix + "Gold", 0);
         mana = PlayerPrefs.GetInt(SavePrefix + "Mana", 0);
         heroIndex = PlayerPrefs.GetInt(SavePrefix + "Hero", 0);
+        endlessMode = PlayerPrefs.GetInt(SavePrefix + "Endless", 0) == 1;
+        heroLevel = PlayerPrefs.GetInt(SavePrefix + "HeroLevel", 1);
+        heroXp = PlayerPrefs.GetInt(SavePrefix + "HeroXp", 0);
+        heroAttack = PlayerPrefs.GetInt(SavePrefix + "HeroAttack", heroBaseAttack[ClampIndex(heroIndex, heroBaseAttack.Length)]);
+        heroDefense = PlayerPrefs.GetInt(SavePrefix + "HeroDefense", heroBaseDefense[ClampIndex(heroIndex, heroBaseDefense.Length)]);
+        heroSkillPower = PlayerPrefs.GetInt(SavePrefix + "HeroSkillPower", heroBaseSkillPower[ClampIndex(heroIndex, heroBaseSkillPower.Length)]);
         maxHealth = PlayerPrefs.GetInt(SavePrefix + "MaxHealth", heroIndex == 2 || heroIndex == 5 ? 120 : 100);
         health = PlayerPrefs.GetInt(SavePrefix + "Health", maxHealth);
         enemyMaxHealth = PlayerPrefs.GetInt(SavePrefix + "EnemyMaxHealth", 45);
@@ -1602,7 +1763,8 @@ public sealed class Loan12Game : MonoBehaviour
         frozenTurns = PlayerPrefs.GetInt(SavePrefix + "FrozenTurns", 0);
         powerAttackTurns = PlayerPrefs.GetInt(SavePrefix + "PowerAttackTurns", 0);
         ginsengUsed = PlayerPrefs.GetInt(SavePrefix + "GinsengUsed", 0) == 1;
-        enemyName = enemyNames[ClampIndex(level - 1, enemyNames.Length)];
+        bossBattle = IsBossLevel(level);
+        enemyName = GetEnemyName(level);
         for (var i = 0; i < inventory.Length; i++)
         {
             inventory[i] = PlayerPrefs.GetInt(SavePrefix + "Item" + i, 0);
