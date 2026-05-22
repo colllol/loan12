@@ -850,7 +850,7 @@ public sealed class Loan12Game : MonoBehaviour
     private void CheckLevelState(int removed)
     {
         UpdateRecords();
-        if (enemyHealth <= 0 || score >= targetScore)
+        if (enemyHealth <= 0)
         {
             if (level >= MaxLevel)
             {
@@ -920,9 +920,10 @@ public sealed class Loan12Game : MonoBehaviour
                 DrawFocus(rect, "focusitem");
             }
 
-            GUI.Label(new Rect(26, y + 2, 116, 14), shopNames[i] + " x" + inventory[i], leftLabelStyle);
+            DrawItemIcon(i, new Rect(24, y + 4, 28, 28));
+            GUI.Label(new Rect(56, y + 2, 86, 14), shopNames[i] + " x" + inventory[i], leftLabelStyle);
             GUI.Label(new Rect(148, y + 2, 64, 14), shopPrices[i] > 0 ? shopPrices[i] + " vang" : "SMS", smallLabelStyle);
-            GUI.Label(new Rect(26, y + 17, 184, 16), shopDescriptions[i], leftLabelStyle);
+            GUI.Label(new Rect(56, y + 17, 154, 16), shopDescriptions[i], leftLabelStyle);
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
                 selectedShopItem = i;
@@ -961,20 +962,25 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void DrawHud()
     {
-        GUI.Label(new Rect(6, 7, 110, 18), enemyName, leftLabelStyle);
-        GUI.Label(new Rect(124, 7, 108, 18), "Diem " + score + "/" + targetScore, smallLabelStyle);
-        DrawBar(new Rect(8, 27, 100, 8), enemyHealth, enemyMaxHealth, new Color32(190, 40, 40, 255));
-        DrawBar(new Rect(132, 27, 96, 8), health, maxHealth, new Color32(40, 170, 70, 255));
-        GUI.Label(new Rect(8, 36, 100, 14), "Dich " + enemyHealth + "/" + enemyMaxHealth, smallLabelStyle);
-        GUI.Label(new Rect(132, 36, 96, 14), "Mau " + health + " Mana " + mana, smallLabelStyle);
-        DrawAvatar(heroIndex, new Rect(111, 15, 18, 18));
+        DrawAvatar(heroIndex, new Rect(6, 6, 24, 24));
+        GUI.Label(new Rect(32, 5, 84, 13), "Minh", leftLabelStyle);
+        DrawBar(new Rect(32, 20, 84, 8), health, maxHealth, new Color32(40, 175, 75, 255));
+        GUI.Label(new Rect(32, 30, 84, 12), health + "/" + maxHealth + "  M" + mana, smallLabelStyle);
+
+        DrawEnemyFace(new Rect(210, 6, 24, 24));
+        GUI.Label(new Rect(124, 5, 82, 13), enemyName, leftLabelStyle);
+        DrawBar(new Rect(124, 20, 82, 8), enemyHealth, enemyMaxHealth, new Color32(190, 40, 40, 255));
+        GUI.Label(new Rect(124, 30, 82, 12), "Dich " + enemyHealth + "/" + enemyMaxHealth, smallLabelStyle);
+
+        GUI.Label(new Rect(58, 42, 124, 12), "Diem " + score + "/" + targetScore, smallLabelStyle);
     }
 
     private void DrawBoardAction(int x, int y, int itemIndex, string key)
     {
-        var rect = new Rect(x, y, 54, 19);
+        var rect = new Rect(x, y, 36, 20);
         GUI.Box(rect, GUIContent.none);
-        GUI.Label(rect, key + ":" + inventory[itemIndex], smallLabelStyle);
+        DrawItemIcon(itemIndex, new Rect(x + 2, y + 2, 16, 16));
+        GUI.Label(new Rect(x + 16, y + 2, 18, 16), inventory[itemIndex].ToString(), smallLabelStyle);
         if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
         {
             UseItem(itemIndex);
@@ -1282,6 +1288,34 @@ public sealed class Loan12Game : MonoBehaviour
         }
 
         GUI.DrawTexture(rect, avatar, ScaleMode.ScaleToFit, true);
+    }
+
+    private void DrawEnemyFace(Rect rect)
+    {
+        var texture = Load("swordred");
+        if (texture == null)
+        {
+            texture = Load("sword");
+        }
+
+        if (texture != null)
+        {
+            GUI.DrawTexture(rect, texture, ScaleMode.ScaleToFit, true);
+        }
+        else
+        {
+            GUI.Box(rect, GUIContent.none);
+        }
+    }
+
+    private void DrawItemIcon(int itemIndex, Rect rect)
+    {
+        var fallbackNames = new[] { "sword", "heart", "gold", "defenceshield", "healingicon", "star" };
+        var fallback = Load(fallbackNames[ClampIndex(itemIndex, fallbackNames.Length)]);
+        if (fallback != null)
+        {
+            GUI.DrawTexture(rect, fallback, ScaleMode.ScaleToFit, true);
+        }
     }
 
     private void DrawBar(Rect rect, int value, int max, Color color)
