@@ -16,6 +16,13 @@ jobs:
       - name: Install xcpretty
         run: gem install xcpretty
 
+      - name: Require regenerated Unity iOS project
+        run: |
+          echo "This repository currently contains a stale UnityPort/Builds/iOS Xcode snapshot."
+          echo "Building that snapshot produces an IPA without the latest UnityPort/Assets/Scripts changes."
+          echo "Regenerate UnityPort/Builds/iOS with Unity 2022.3.62f3 after code changes, then rerun this workflow."
+          exit 1
+
       - name: Build .app
         run: |
           set -e
