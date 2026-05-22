@@ -16,22 +16,25 @@ jobs:
       - name: Install xcpretty
         run: gem install xcpretty
 
-      - name: Build unsigned IPA
+      - name: Build .app
         run: |
           set -e
-          XCODE_PROJ="UnityPort/Builds/iOS/Unity-iPhone.xcodeproj"
-          SCHEME="Unity-iPhone"
-
-          xcodebuild -project "$XCODE_PROJ" -scheme "$SCHEME" -configuration Release \
+          xcodebuild -project UnityPort/Builds/iOS/Unity-iPhone.xcodeproj \
+            -scheme Unity-iPhone -configuration Release \
+            -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO \
             CONFIGURATION_BUILD_DIR=/tmp/build | xcpretty
 
+      - name: Package IPA
+        run: |
+          set -e
           mkdir -p /tmp/Payload
           cp -R /tmp/build/Loan12SuQuan.app /tmp/Payload/
-          cd /tmp && zip -r Unity-iPhone.ipa Payload/
+          cd /tmp && zip -r Loan12-iPhone.ipa Payload/
+          echo "IPA size: $(wc -c < Loan12-iPhone.ipa) bytes"
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: Loan12-iPhone
-          path: /tmp/Unity-iPhone.ipa
+          path: /tmp/Loan12-iPhone.ipa
