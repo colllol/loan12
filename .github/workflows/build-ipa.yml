@@ -2,99 +2,32 @@ name: Build iOS IPA
 
 on:
   workflow_dispatch:
-    inputs:
-      signing:
-        description: 'Signing method'
-        required: true
-        default: 'unsigned'
-        type: choice
-        options:
-          - unsigned
-          - development
-          - release
 
 jobs:
   build-ipa:
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: true
 
-      - name: Configure Apple Signing (signed builds only)
-        if: ${{ inputs.signing != 'unsigned' }}
-        run: |
-          echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > /tmp/certificate.p12
-          echo "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > /tmp/profile.mobileprovision
-
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          uuid=`grep UUID -A1 -a /tmp/profile.mobileprovision | grep -io "[-A-F0-9]\{36\}"`
-          cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
-
-          security create-keychain -p temp temp.keychain
-          security default-keychain -s temp.keychain
-          security unlock-keychain -p temp temp.keychain
-          security import /tmp/certificate.p12 -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -A -t cert -f pkcs12 -k temp.keychain
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k temp temp.keychain > /dev/null 2>&1
+      - name: Install xcpretty
+        run: gem install xcpretty
 
       - name: Build unsigned IPA
-        if: ${{ inputs.signing == 'unsigned' }}
         run: |
+          set -e
           XCODE_PROJ="UnityPort/Builds/iOS/Unity-iPhone.xcodeproj"
           SCHEME="Unity-iPhone"
 
           xcodebuild -project "$XCODE_PROJ" -scheme "$SCHEME" -configuration Release \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO \
-            CONFIGURATION_BUILD_DIR=/tmp/build
+            CONFIGURATION_BUILD_DIR=/tmp/build | xcpretty
 
           mkdir -p /tmp/Payload
           cp -R /tmp/build/Unity-iPhone.app /tmp/Payload/
           cd /tmp && zip -r Unity-iPhone.ipa Payload/
 
-      - name: Build signed IPA
-        if: ${{ inputs.signing != 'unsigned' }}
-        env:
-          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          XCODE_PROJ="UnityPort/Builds/iOS/Unity-iPhone.xcodeproj"
-          SCHEME="Unity-iPhone"
-
-          EXPORT_OPTIONS_PLIST="/tmp/exportOptions.plist"
-
-          if [ "${{ inputs.signing }}" = "development" ]; then
-            METHOD="development"
-          else
-            METHOD="app-store"
-          fi
-
-          cat > "$EXPORT_OPTIONS_PLIST" <<EOF
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>method</key>
-        <string>${METHOD}</string>
-        <key>teamID</key>
-        <string>${TEAM_ID}</string>
-        <key>signingStyle</key>
-        <string>manual</string>
-      </dict>
-      </plist>
-      EOF
-
-          xcodebuild -project "$XCODE_PROJ" -scheme "$SCHEME" -configuration Release \
-            -allowProvisioningUpdates archive -archivePath /tmp/Unity-iPhone.xcarchive
-
-          xcodebuild -exportArchive -archivePath /tmp/Unity-iPhone.xcarchive \
-            -exportPath /tmp/Unity-iPhone.ipa \
-            -exportOptionsPlist "$EXPORT_OPTIONS_PLIST" \
-            -allowProvisioningUpdates
-
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Unity-iPhone-${{ inputs.signing }}
-          path: |
-            /tmp/Unity-iPhone.ipa
-            /tmp/Unity-iPhone.ipa/*.ipa
-          if-no-files-found: error
+          name: Loan12-iPhone
+          path: /tmp/Unity-iPhone.ipa
