@@ -1,4 +1,4 @@
-name: Build iOS IPA
+name: Build iOS IPA & Android APK
 
 on:
   push:
@@ -7,14 +7,12 @@ on:
 
 jobs:
   build-ipa:
+    name: Build IPA (iOS)
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
         with:
           lfs: true
-
-      - name: Install xcpretty
-        run: gem install xcpretty
 
       - name: Build .app
         run: |
@@ -38,3 +36,34 @@ jobs:
         with:
           name: Loan12-iPhone
           path: /tmp/Loan12-iPhone.ipa
+
+  build-apk:
+    name: Build APK (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Build APK
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: UnityPort
+          targetPlatform: Android
+          buildMethod: Loan12AndroidBuildSettings.BuildApk
+          versioning: None
+          androidKeystoreName: ${{ secrets.ANDROID_KEYSTORE_NAME }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEY_ALIAS }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEY_PASS }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Loan12-Android
+          path: build/Android/*.apk
+          if-no-files-found: warn
