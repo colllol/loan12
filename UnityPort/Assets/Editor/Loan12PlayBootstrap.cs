@@ -13,16 +13,10 @@ public static class Loan12PlayBootstrap
 
     private static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
-        if (state != PlayModeStateChange.EnteredPlayMode)
-        {
-            return;
-        }
-
+        if (state != PlayModeStateChange.EnteredPlayMode) return;
         Loan12Bootstrap.EnsureRuntime();
-        if (Object.FindObjectOfType<Loan12Game>() == null)
-        {
+        if (Object.FindObjectOfType<GameManager>() == null)
             Debug.LogError("Loan12 runtime was not created.");
-        }
     }
 }
 #endif

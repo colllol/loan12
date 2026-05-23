@@ -16,10 +16,7 @@ public static class Loan12Bootstrap
 
     public static void EnsureRuntime()
     {
-        if (Object.FindObjectOfType<Loan12Game>() != null)
-        {
-            return;
-        }
+        if (Object.FindObjectOfType<GameManager>() != null) return;
 
         var cameraObject = new GameObject("Main Camera");
         var camera = cameraObject.AddComponent<Camera>();
@@ -28,9 +25,10 @@ public static class Loan12Bootstrap
         camera.orthographic = true;
         cameraObject.tag = "MainCamera";
 
-        var gameObject = new GameObject("Loan 12 Su Quan Port");
-        Object.DontDestroyOnLoad(gameObject);
-        gameObject.AddComponent<Loan12Game>();
-        Debug.Log("Loan12 runtime created.");
+        var go = new GameObject("Loan12Game");
+        Object.DontDestroyOnLoad(go);
+        go.AddComponent<GameManager>();
+        go.AddComponent<AudioManager>();
+        Debug.Log("Loan12 game runtime created.");
     }
 }

@@ -36,7 +36,6 @@ public static class Loan12IOSBuildSettings
             target = BuildTarget.iOS,
             options = BuildOptions.None
         };
-
         var report = BuildPipeline.BuildPlayer(options);
         Debug.Log("Loan12 iOS build finished with result: " + report.summary.result);
     }
@@ -44,20 +43,13 @@ public static class Loan12IOSBuildSettings
     private static void EnsureBootScene()
     {
         if (!AssetDatabase.IsValidFolder("Assets/Scenes"))
-        {
             AssetDatabase.CreateFolder("Assets", "Scenes");
-        }
-
         if (!System.IO.File.Exists(BootScenePath))
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             EditorSceneManager.SaveScene(scene, BootScenePath);
         }
-
-        EditorBuildSettings.scenes = new[]
-        {
-            new EditorBuildSettingsScene(BootScenePath, true)
-        };
+        EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(BootScenePath, true) };
         AssetDatabase.SaveAssets();
     }
 }
