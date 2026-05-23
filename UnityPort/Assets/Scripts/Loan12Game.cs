@@ -520,6 +520,7 @@ public sealed class Loan12Game : MonoBehaviour
             DrawFocus(eventRect, "focusitem");
         }
 
+        DrawEventIcon(new Rect(38, 250, 18, 18));
         GUI.Label(eventRect, "Event: Chien truong vo tan", labelStyle);
         if (Event.current.type == EventType.MouseDown && eventRect.Contains(Event.current.mousePosition))
         {
@@ -1659,6 +1660,13 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void DrawAvatar(int index, Rect rect)
     {
+        var generatedFace = Load("faces/hero_" + ClampIndex(index, heroNames.Length).ToString("00"));
+        if (generatedFace != null)
+        {
+            GUI.DrawTexture(rect, generatedFace, ScaleMode.ScaleToFit, true);
+            return;
+        }
+
         var faceNames = new[]
         {
             "fireballicon",
@@ -1684,7 +1692,21 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void DrawEnemyFace(Rect rect)
     {
-        var texture = Load("swordred");
+        Texture2D texture = null;
+        if (endlessMode)
+        {
+            texture = Load("faces/event_endless");
+        }
+        else if (bossBattle)
+        {
+            texture = Load("faces/boss_" + ClampIndex(level / 5, bossNames.Length).ToString("00"));
+        }
+
+        if (texture == null)
+        {
+            texture = Load("swordred");
+        }
+
         if (texture == null)
         {
             texture = Load("sword");
@@ -1697,6 +1719,15 @@ public sealed class Loan12Game : MonoBehaviour
         else
         {
             GUI.Box(rect, GUIContent.none);
+        }
+    }
+
+    private void DrawEventIcon(Rect rect)
+    {
+        var texture = Load("faces/event_endless");
+        if (texture != null)
+        {
+            GUI.DrawTexture(rect, texture, ScaleMode.ScaleToFit, true);
         }
     }
 
