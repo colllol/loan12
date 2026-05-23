@@ -179,6 +179,7 @@ public sealed class Loan12Game : MonoBehaviour
     private int enemyMaxHealth;
     private int targetScore;
     private int enemyAttack;
+    private int enemyDefense;
     private bool bossBattle;
     private int shieldTurns;
     private int frozenTurns;
@@ -200,6 +201,7 @@ public sealed class Loan12Game : MonoBehaviour
     private GUIStyle labelStyle;
     private GUIStyle smallLabelStyle;
     private GUIStyle leftLabelStyle;
+    private GUIStyle buttonStyle;
 
     private void Awake()
     {
@@ -573,16 +575,28 @@ public sealed class Loan12Game : MonoBehaviour
             }
         }
 
-        GUI.Label(new Rect(8, 242, 224, 18), message, smallLabelStyle);
-        GUI.Label(new Rect(8, 258, 224, 14), "Skill: phim 1-9", smallLabelStyle);
+        GUI.Label(new Rect(8, 242, 224, 12), message, smallLabelStyle);
+        if (DrawSmallButton(new Rect(8, 256, 46, 16), "Menu"))
+        {
+            SaveGame();
+            SwitchTo(ScreenState.MainMenu);
+        }
+
+        if (DrawSmallButton(new Rect(60, 256, 42, 16), "Luu"))
+        {
+            SaveGame();
+            message = "Da luu tien do.";
+        }
+
+        GUI.Label(new Rect(106, 256, 128, 16), "Skill: phim 1-9", smallLabelStyle);
         DrawBoardAction(6, 274, 0, "K");
         DrawBoardAction(44, 274, 1, "S");
         DrawBoardAction(82, 274, 2, "G");
         DrawBoardAction(120, 274, 3, "A");
         DrawBoardAction(158, 274, 4, "P");
         DrawBoardAction(196, 274, 5, "N");
-        GUI.Label(new Rect(6, 298, 72, 16), "Man " + level, smallLabelStyle);
-        GUI.Label(new Rect(84, 298, 72, 16), "Di " + movesLeft, smallLabelStyle);
+        GUI.Label(new Rect(6, 298, 72, 16), (endlessMode ? "Dot " : "Man ") + level, smallLabelStyle);
+        GUI.Label(new Rect(84, 298, 72, 16), "Luot " + movesLeft, smallLabelStyle);
         GUI.Label(new Rect(162, 298, 72, 16), "Vang " + gold, smallLabelStyle);
         DrawEffects();
     }
@@ -798,6 +812,7 @@ public sealed class Loan12Game : MonoBehaviour
         targetScore = 180 + (level - 1) * 120;
         movesLeft = endlessMode ? Mathf.Max(14, 24 - level / 4) : Mathf.Max(14, 27 - level / 2);
         enemyAttack = (6 + level * 2 + (endlessMode ? level / 2 : 0)) * (bossBattle ? 2 : 1);
+        enemyDefense = Mathf.Max(0, level / 3 + (bossBattle ? level / 2 + 4 : 0));
         cursorX = BoardSize / 2;
         cursorY = BoardSize / 2;
         ClearSelection();
@@ -809,7 +824,8 @@ public sealed class Loan12Game : MonoBehaviour
 
     private void ApplyHeroStats(bool fullHeal)
     {
-        heroAttack = heroBaseAttack[ClampIndex(heroIndex, heroBaseAttack.Length)] + (heroLevel - 1) * 3;
+        heroLevel = Mathf.Max(1, Mathf.Min(99, heroLevel));
+        heroAttack = heroBaseAttack[ClampIndex(heroIndex, heroBaseAttack.Length)] + GetAttackBonusForLevel(heroLevel);
         heroDefense = heroBaseDefense[ClampIndex(heroIndex, heroBaseDefense.Length)] + (heroLevel - 1);
         heroSkillPower = heroBaseSkillPower[ClampIndex(heroIndex, heroBaseSkillPower.Length)] + (heroLevel - 1) * 2;
         maxHealth = heroBaseHealth[ClampIndex(heroIndex, heroBaseHealth.Length)] + (heroLevel - 1) * 14;
@@ -823,26 +839,54 @@ public sealed class Loan12Game : MonoBehaviour
         }
     }
 
+    private static int GetAttackBonusForLevel(int characterLevel)
+    {
+        var bonus = 0;
+        for (var gainedLevel = 2; gainedLevel <= Mathf.Min(characterLevel, 99); gainedLevel++)
+        {
+            bonus += 1 + (gainedLevel - 1) / 10;
+        }
+
+        return bonus;
+    }
+
     private void AddHeroXp(int amount)
     {
+        if (heroLevel >= 99)
+        {
+            heroXp = 0;
+            ApplyHeroStats(false);
+            return;
+        }
+
         heroXp += amount;
         var leveled = false;
-        while (heroXp >= XpForNextHeroLevel())
+        while (heroLevel < 99 && heroXp >= XpForNextHeroLevel())
         {
             heroXp -= XpForNextHeroLevel();
             heroLevel++;
             leveled = true;
         }
 
+        if (heroLevel >= 99)
+        {
+            heroXp = 0;
+        }
+
         ApplyHeroStats(leveled);
         if (leveled)
         {
-            message += " Tuong len cap " + heroLevel + ".";
+            message += " Tuong len cap " + heroLevel + ", mau da day.";
         }
     }
 
     private int XpForNextHeroLevel()
     {
+        if (heroLevel >= 99)
+        {
+            return 0;
+        }
+
         return 80 + heroLevel * 35;
     }
 
@@ -1005,10 +1049,13 @@ public sealed class Loan12Game : MonoBehaviour
     {
         var totalRemoved = 0;
         var chain = 0;
+        var totalDamage = 0;
+        var totalHeal = 0;
         while (true)
         {
             int[] removedByType;
-            var matches = FindMatches(out removedByType);
+            var groups = new List<MatchGroup>();
+            var matches = FindMatches(out removedByType, groups);
             var removed = CountMarked(matches);
             if (removed == 0)
             {
@@ -1017,17 +1064,27 @@ public sealed class Loan12Game : MonoBehaviour
 
             chain++;
             totalRemoved += removed;
-            ApplyRewards(removedByType, chain);
+            ApplyRewards(removedByType, groups, chain, ref totalDamage, ref totalHeal);
             RemoveMarked(matches);
             CollapseBoard();
         }
 
         EnsurePlayableBoard();
-        message = "Pha " + totalRemoved + " quan. Sat thuong " + Mathf.Max(1, totalRemoved * 2) + ".";
+        message = "Pha " + totalRemoved + " quan.";
+        if (totalDamage > 0)
+        {
+            message += " Sat thuong " + totalDamage + ".";
+        }
+
+        if (totalHeal > 0)
+        {
+            message += " Hoi " + totalHeal + " mau.";
+        }
+
         return totalRemoved;
     }
 
-    private void ApplyRewards(int[] removedByType, int chain)
+    private void ApplyRewards(int[] removedByType, List<MatchGroup> groups, int chain, ref int totalDamage, ref int totalHeal)
     {
         var chainBonus = chain - 1;
         for (var i = 0; i < removedByType.Length; i++)
@@ -1042,18 +1099,14 @@ public sealed class Loan12Game : MonoBehaviour
             score += count * 10 + chainBonus * 5;
             switch (i)
             {
-                case 0:
-                    DamageEnemy(count * (heroAttack + chain + (heroIndex == 3 ? 2 : 0)) * attackMultiplier / 2);
-                    break;
                 case 1:
                     score += count * 6;
                     break;
-                case 2:
-                    health = Mathf.Min(maxHealth, health + count * (heroIndex == 2 ? 5 : 3));
-                    break;
                 case 3:
                     mana = Mathf.Min(99, mana + count * (heroIndex == 1 ? 3 : 2));
-                    DamageEnemy(count * Mathf.Max(2, heroAttack / 3) * attackMultiplier);
+                    var yinDamage = count * Mathf.Max(2, heroAttack / 3) * attackMultiplier;
+                    DamageEnemy(yinDamage);
+                    totalDamage += yinDamage;
                     break;
                 case 4:
                     gold += count;
@@ -1065,7 +1118,59 @@ public sealed class Loan12Game : MonoBehaviour
             }
         }
 
+        var swordMultiplier = powerAttackTurns > 0 ? 2 : 1;
+        for (var i = 0; i < groups.Count; i++)
+        {
+            var group = groups[i];
+            if (group.Piece == 0)
+            {
+                var damage = CalculateSwordDamage(group.Count) * swordMultiplier;
+                DamageEnemy(damage);
+                totalDamage += damage;
+            }
+            else if (group.Piece == 2)
+            {
+                var heal = CalculateHeartHeal(group.Count);
+                health = Mathf.Min(maxHealth, health + heal);
+                totalHeal += heal;
+            }
+        }
+
         enemyHealth = Mathf.Max(0, enemyHealth);
+    }
+
+    private void ApplyRewards(int[] removedByType, int chain)
+    {
+        var totalDamage = 0;
+        var totalHeal = 0;
+        ApplyRewards(removedByType, new List<MatchGroup>(), chain, ref totalDamage, ref totalHeal);
+    }
+
+    private int CalculateSwordDamage(int swordCount)
+    {
+        if (swordCount <= 3)
+        {
+            return Mathf.Max(1, heroAttack);
+        }
+
+        return Mathf.Max(1, swordCount * heroAttack + heroAttack - enemyDefense);
+    }
+
+    private static int CalculateHeartHeal(int heartCount)
+    {
+        switch (Mathf.Min(heartCount, 7))
+        {
+            case 3:
+                return 9;
+            case 4:
+                return 13;
+            case 5:
+                return 22;
+            case 6:
+                return 35;
+            default:
+                return 58;
+        }
     }
 
     private void DamageEnemy(int amount)
@@ -1247,6 +1352,18 @@ public sealed class Loan12Game : MonoBehaviour
         {
             UseItem(itemIndex);
         }
+    }
+
+    private bool DrawSmallButton(Rect rect, string text)
+    {
+        GUI.Box(rect, GUIContent.none);
+        GUI.Label(rect, text, buttonStyle);
+        if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void DrawResult()
@@ -1619,6 +1736,11 @@ public sealed class Loan12Game : MonoBehaviour
 
     private bool[,] FindMatches(out int[] removedByType)
     {
+        return FindMatches(out removedByType, null);
+    }
+
+    private bool[,] FindMatches(out int[] removedByType, List<MatchGroup> groups)
+    {
         var marks = new bool[BoardSize, BoardSize];
         removedByType = new int[pieces.Length];
 
@@ -1632,7 +1754,7 @@ public sealed class Loan12Game : MonoBehaviour
                     continue;
                 }
 
-                MarkRun(marks, removedByType, runStart, y, x - runStart, true);
+                MarkRun(marks, removedByType, groups, runStart, y, x - runStart, true);
                 runStart = x;
             }
         }
@@ -1647,7 +1769,7 @@ public sealed class Loan12Game : MonoBehaviour
                     continue;
                 }
 
-                MarkRun(marks, removedByType, x, runStart, y - runStart, false);
+                MarkRun(marks, removedByType, groups, x, runStart, y - runStart, false);
                 runStart = y;
             }
         }
@@ -1655,11 +1777,17 @@ public sealed class Loan12Game : MonoBehaviour
         return marks;
     }
 
-    private void MarkRun(bool[,] marks, int[] removedByType, int startX, int startY, int length, bool horizontal)
+    private void MarkRun(bool[,] marks, int[] removedByType, List<MatchGroup> groups, int startX, int startY, int length, bool horizontal)
     {
         if (length < 3)
         {
             return;
+        }
+
+        var piece = board[startX, startY];
+        if (groups != null && piece != EmptyPiece)
+        {
+            groups.Add(new MatchGroup(piece, length));
         }
 
         for (var i = 0; i < length; i++)
@@ -1847,6 +1975,7 @@ public sealed class Loan12Game : MonoBehaviour
         PlayerPrefs.SetInt(SavePrefix + "EnemyMaxHealth", enemyMaxHealth);
         PlayerPrefs.SetInt(SavePrefix + "TargetScore", targetScore);
         PlayerPrefs.SetInt(SavePrefix + "EnemyAttack", enemyAttack);
+        PlayerPrefs.SetInt(SavePrefix + "EnemyDefense", enemyDefense);
         PlayerPrefs.SetInt(SavePrefix + "ShieldTurns", shieldTurns);
         PlayerPrefs.SetInt(SavePrefix + "FrozenTurns", frozenTurns);
         PlayerPrefs.SetInt(SavePrefix + "PowerAttackTurns", powerAttackTurns);
@@ -1887,6 +2016,7 @@ public sealed class Loan12Game : MonoBehaviour
         enemyHealth = PlayerPrefs.GetInt(SavePrefix + "EnemyHealth", enemyMaxHealth);
         targetScore = PlayerPrefs.GetInt(SavePrefix + "TargetScore", 180);
         enemyAttack = PlayerPrefs.GetInt(SavePrefix + "EnemyAttack", 8);
+        enemyDefense = PlayerPrefs.GetInt(SavePrefix + "EnemyDefense", Mathf.Max(0, level / 3 + (IsBossLevel(level) ? level / 2 + 4 : 0)));
         shieldTurns = PlayerPrefs.GetInt(SavePrefix + "ShieldTurns", 0);
         frozenTurns = PlayerPrefs.GetInt(SavePrefix + "FrozenTurns", 0);
         powerAttackTurns = PlayerPrefs.GetInt(SavePrefix + "PowerAttackTurns", 0);
@@ -1995,14 +2125,14 @@ public sealed class Loan12Game : MonoBehaviour
         labelStyle = new GUIStyle(GUI.skin.label)
         {
             alignment = TextAnchor.MiddleCenter,
-            fontSize = 12,
+            fontSize = 11,
             normal = { textColor = Color.white },
             wordWrap = false
         };
 
         smallLabelStyle = new GUIStyle(labelStyle)
         {
-            fontSize = 10,
+            fontSize = 9,
             wordWrap = true
         };
 
@@ -2010,6 +2140,14 @@ public sealed class Loan12Game : MonoBehaviour
         {
             alignment = TextAnchor.UpperLeft,
             wordWrap = true
+        };
+
+        buttonStyle = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 9,
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = Color.white },
+            wordWrap = false
         };
     }
 
@@ -2132,6 +2270,18 @@ public sealed class Loan12Game : MonoBehaviour
             Rect = rect;
             TotalFrames = frames;
             FramesLeft = frames;
+        }
+    }
+
+    private sealed class MatchGroup
+    {
+        public readonly int Piece;
+        public readonly int Count;
+
+        public MatchGroup(int piece, int count)
+        {
+            Piece = piece;
+            Count = count;
         }
     }
 }
