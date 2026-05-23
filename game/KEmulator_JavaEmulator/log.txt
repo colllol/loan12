@@ -1,0 +1,747 @@
+KEmulator Lite v0.9.8 Running...
+Get classes from C:\Users\Admin\Documents\GitHub\loan12\game\Loan-12-Su-Quan.jar
+Get class com.mic.smsgame.suquan.aa
+Get class com.mic.smsgame.suquan.e
+Get class aj
+Get class com.mic.smsgame.suquan.w
+Get class g
+Get class ds
+Get class y
+Get class ca
+Get class cs
+Get class df
+Get class com.mic.smsgame.suquan.ae
+Get class com.mic.smsgame.suquan.i
+Get class ba
+Get class bs
+Get class aa
+Get class as
+Get class cw
+Get class com.mg.smsgame.main.b
+Get class dj
+Get class p
+Get class bw
+Get class cj
+Get class ae
+Get class com.mic.smsgame.suquan.r
+Get class aw
+Get class bj
+Get class dn
+Get class b
+Get class t
+Get class ea
+Get class com.mic.smsgame.suquan.SQMidlet
+Get class cn
+Get class da
+Get class com.mic.smsgame.suquan.v
+Get class bn
+Get class x
+Get class an
+Get class cr
+Get class de
+Get class k
+Get class dw
+Get class com.mic.smsgame.suquan.z
+Get class br
+Get class ce
+Get class com.mic.smsgame.suquan.m
+Get class ar
+Get class com.mg.smsgame.main.a
+Get class be
+Get class di
+Get class o
+Get class ci
+Get class com.mic.smsgame.suquan.q
+Get class av
+Get class bi
+Get class s
+Get class com.mic.smsgame.suquan.d
+Get class ai
+Get class cm
+Get class f
+Get class dr
+Get class bm
+Get class com.mic.smsgame.suquan.ad
+Get class com.mic.smsgame.suquan.h
+Get class am
+Get class dd
+Get class j
+Get class dv
+Get class cd
+Get class cv
+Get class com.mic.smsgame.suquan.l
+Get class aq
+Get class bd
+Get class bv
+Get class n
+Get class dz
+Get class ad
+Get class cz
+Get class dm
+Get class a
+Get class bh
+Get class bz
+Get class com.mic.smsgame.suquan.c
+Get class ah
+Get class com.mic.smsgame.suquan.u
+Get class az
+Get class e
+Get class dq
+Get class w
+Get class cq
+Get class com.mic.smsgame.suquan.ac
+Get class com.mic.smsgame.suquan.g
+Get class al
+Get class com.mic.smsgame.suquan.y
+Get class bq
+Get class i
+Get class du
+Get class cu
+Get class dh
+Get class bc
+Get class bu
+Get class ch
+Get class ac
+Get class com.mic.smsgame.suquan.p
+Get class au
+Get class cy
+Get class dl
+Get class r
+Get class by
+Get class cl
+Get class com.mic.smsgame.suquan.b
+Get class com.mg.smsgame.main.MGMIDlet
+Get class com.mic.smsgame.suquan.t
+Get class ay
+Get class bl
+Get class dp
+Get class v
+Get class cp
+Get class dc
+Get class com.mic.smsgame.suquan.x
+Get class bp
+Get class cc
+Get class z
+Get class com.mic.smsgame.suquan.k
+Get class ap
+Get class dg
+Get class m
+Get class dy
+Get class bt
+Get class cg
+Get class com.mic.smsgame.suquan.o
+Get class at
+Get class bg
+Get class dk
+Get class q
+Get class ag
+Get class ck
+Get class d
+Get class com.mic.smsgame.suquan.s
+Get class bk
+Get class u
+Get class com.mic.smsgame.suquan.ab
+Get class com.mic.smsgame.suquan.f
+Get class ak
+Get class db
+Get class h
+Get class dt
+Get class bo
+Get class cb
+Get class ct
+Get class com.mic.smsgame.suquan.j
+Get class ao
+Get class bb
+Get class l
+Get class dx
+Get class ab
+Get class cf
+Get class cx
+Get class javay.microedition.in.Connector
+Get class com.mic.smsgame.suquan.n
+Get class bf
+Get class bx
+Get class com.mic.smsgame.suquan.a
+Get class af
+Get class ax
+Get class do
+Get class c
+Get class co
+Custom.jar.getResourceStream: /icon.png (361)
+Launch MIDlet class: com.mic.smsgame.suquan.SQMidlet
+System.getProperty#microedition.platform=SonyEricssonK800
+System.getProperty#com.sonyericsson.java.platform=null
+Custom.jar.getResourceStream: _font1.mg (1797)
+openRecordStore 16b
+getRecord 16b_3
+getRecord 16b_2
+openRecordStore 161b
+getRecord 161b_3
+getRecord 161b_1
+Custom.jar.getResourceStream: _font2.mg (1797)
+Custom.jar.getResourceStream: _mglogo.mg (757)
+Custom.jar.getResourceStream: _partnerLogo.mg (1636)
+openRecordStore 16b
+getRecord 16b_4
+openRecordStore 16b
+addRecord 16b_7
+openRecordStore 16b
+getRecord 16b_5
+Custom.jar.getResourceStream: _corner.mg (183)
+Custom.jar.getResourceStream: _arrow.mg (133)
+System.getProperty#microedition.platform=SonyEricssonK800
+Custom.jar.getResourceStream: crystalblue.mg (187)
+openRecordStore 16b
+getRecord 16b_6
+Custom.jar.getResourceStream: _sound.mg (2231)
+openRecordStore 16b
+Custom.jar.getResourceStream: bksplashscreen.mg (23643)
+Custom.jar.getResourceStream: strcontinuegame.mg (212)
+Custom.jar.getResourceStream: strcontinuegamefocus.mg (212)
+Custom.jar.getResourceStream: strnewgame.mg (204)
+Custom.jar.getResourceStream: strnewgamefocus.mg (204)
+Custom.jar.getResourceStream: strrecord.mg (207)
+Custom.jar.getResourceStream: strrecordfocus.mg (207)
+Custom.jar.getResourceStream: strshop.mg (234)
+Custom.jar.getResourceStream: strshopfocus.mg (234)
+Custom.jar.getResourceStream: strinformation.mg (216)
+Custom.jar.getResourceStream: strinformationfocus.mg (216)
+Custom.jar.getResourceStream: strgivegame.mg (225)
+Custom.jar.getResourceStream: strgivegamefocus.mg (225)
+Custom.jar.getResourceStream: strchatola.mg (203)
+Custom.jar.getResourceStream: strchatolafocus.mg (203)
+Custom.jar.getResourceStream: strothergame.mg (228)
+Custom.jar.getResourceStream: strothergamefocus.mg (228)
+Custom.jar.getResourceStream: strguide.mg (252)
+Custom.jar.getResourceStream: strguidefocus.mg (252)
+Custom.jar.getResourceStream: strauthor.mg (200)
+Custom.jar.getResourceStream: strauthorfocus.mg (200)
+Custom.jar.getResourceStream: bkmenu.mg (34292)
+Custom.jar.getResourceStream: title.mg (686)
+Custom.jar.getResourceStream: swordfocus.mg (191)
+>>xStop=90
+>>xStop=89
+>>xStop=86
+>>xStop=84
+Custom.jar.getResourceStream: r/q.mg (221)
+Custom.jar.getResourceStream: r/g.mg (236)
+Custom.jar.getResourceStream: r/1.mg (316)
+Custom.jar.getResourceStream: r/2.mg (439)
+Custom.jar.getResourceStream: r/3.mg (349)
+Custom.jar.getResourceStream: r/4.mg (382)
+Custom.jar.getResourceStream: bkmenu.mg (34292)
+openRecordStore 161b
+openRecordStore 161b
+openRecordStore 161b
+addRecord 161b_4
+openRecordStore 16b
+Custom.jar.getResourceStream: r/br.mg (705)
+openRecordStore 16b
+Custom.jar.getResourceStream: strcontinuegame.mg (212)
+Custom.jar.getResourceStream: strcontinuegamefocus.mg (212)
+Custom.jar.getResourceStream: strnewgame.mg (204)
+Custom.jar.getResourceStream: strnewgamefocus.mg (204)
+Custom.jar.getResourceStream: strrecord.mg (207)
+Custom.jar.getResourceStream: strrecordfocus.mg (207)
+Custom.jar.getResourceStream: strshop.mg (234)
+Custom.jar.getResourceStream: strshopfocus.mg (234)
+Custom.jar.getResourceStream: strinformation.mg (216)
+Custom.jar.getResourceStream: strinformationfocus.mg (216)
+Custom.jar.getResourceStream: strgivegame.mg (225)
+Custom.jar.getResourceStream: strgivegamefocus.mg (225)
+Custom.jar.getResourceStream: strchatola.mg (203)
+Custom.jar.getResourceStream: strchatolafocus.mg (203)
+Custom.jar.getResourceStream: strothergame.mg (228)
+Custom.jar.getResourceStream: strothergamefocus.mg (228)
+Custom.jar.getResourceStream: strguide.mg (252)
+Custom.jar.getResourceStream: strguidefocus.mg (252)
+Custom.jar.getResourceStream: strauthor.mg (200)
+Custom.jar.getResourceStream: strauthorfocus.mg (200)
+Custom.jar.getResourceStream: bkmenu.mg (34292)
+Custom.jar.getResourceStream: title.mg (686)
+Custom.jar.getResourceStream: swordfocus.mg (191)
+>>xStop=90
+>>xStop=89
+>>xStop=86
+>>xStop=84
+Custom.jar.getResourceStream: bkmenu.mg (34292)
+Custom.jar.getResourceStream: itemshops.mg (1673)
+Custom.jar.getResourceStream: frame1.mg (581)
+Custom.jar.getResourceStream: frame2.mg (177)
+Custom.jar.getResourceStream: frame3.mg (164)
+Custom.jar.getResourceStream: focusitem.mg (270)
+Custom.jar.getResourceStream: gold.mg (203)
+openRecordStore 161b
+Custom.jar.getResourceStream: numbersmall.mg (165)
+Custom.jar.getResourceStream: strcontinuegame.mg (212)
+Custom.jar.getResourceStream: strcontinuegamefocus.mg (212)
+Custom.jar.getResourceStream: strnewgame.mg (204)
+Custom.jar.getResourceStream: strnewgamefocus.mg (204)
+Custom.jar.getResourceStream: strrecord.mg (207)
+Custom.jar.getResourceStream: strrecordfocus.mg (207)
+Custom.jar.getResourceStream: strshop.mg (234)
+Custom.jar.getResourceStream: strshopfocus.mg (234)
+Custom.jar.getResourceStream: strinformation.mg (216)
+Custom.jar.getResourceStream: strinformationfocus.mg (216)
+Custom.jar.getResourceStream: strgivegame.mg (225)
+Custom.jar.getResourceStream: strgivegamefocus.mg (225)
+Custom.jar.getResourceStream: strchatola.mg (203)
+Custom.jar.getResourceStream: strchatolafocus.mg (203)
+Custom.jar.getResourceStream: strothergame.mg (228)
+Custom.jar.getResourceStream: strothergamefocus.mg (228)
+Custom.jar.getResourceStream: strguide.mg (252)
+Custom.jar.getResourceStream: strguidefocus.mg (252)
+Custom.jar.getResourceStream: strauthor.mg (200)
+Custom.jar.getResourceStream: strauthorfocus.mg (200)
+Custom.jar.getResourceStream: bkmenu.mg (34292)
+Custom.jar.getResourceStream: title.mg (686)
+Custom.jar.getResourceStream: swordfocus.mg (191)
+>>xStop=90
+>>xStop=89
+>>xStop=86
+>>xStop=84
+>>xStop=80
+>>xStop=88
+>>xStop=81
+>>xStop=79
+>>xStop=95
+Custom.jar.getResourceStream: sword.mg (253)
+Custom.jar.getResourceStream: yinyang.mg (271)
+Custom.jar.getResourceStream: rice.mg (272)
+Custom.jar.getResourceStream: gold.mg (203)
+Custom.jar.getResourceStream: book.mg (345)
+Custom.jar.getResourceStream: heart.mg (228)
+Custom.jar.getResourceStream: swordred.mg (309)
+>>xStop=90
+>>xStop=89
+>>xStop=86
+>>xStop=84
+openRecordStore 16b
+openRecordStore 16b
+addRecord 16b_8
+addRecord 16b_9
+openRecordStore 16b
+addRecord 16b_10
+openRecordStore 161b
+Custom.jar.getResourceStream: m/m.mg (54305)
+Custom.jar.getResourceStream: m/ar.mg (195)
+Custom.jar.getResourceStream: avatar.mg (34902)
+Custom.jar.getResourceStream: focusitem.mg (270)
+Custom.jar.getResourceStream: frame1.mg (581)
+Custom.jar.getResourceStream: frame2.mg (177)
+Custom.jar.getResourceStream: frame3.mg (164)
+Custom.jar.getResourceStream: bkmenu.mg (34292)
+Left command: Xong
+openRecordStore 16b
+addRecord 16b_11
+openRecordStore 16b
+addRecord 16b_12
+Custom.jar.getResourceStream: m/hm.mg (205)
+Custom.jar.getResourceStream: m/m.mg (54305)
+Custom.jar.getResourceStream: m/b.mg (120)
+Custom.jar.getResourceStream: m/r.mg (493)
+Custom.jar.getResourceStream: m/mt1.mg (238)
+Custom.jar.getResourceStream: m/ar.mg (195)
+Custom.jar.getResourceStream: m/vk.mg (401)
+openRecordStore 16b
+getRecord 16b_10
+Custom.jar.getResourceStream: m/l.mg (156)
+openRecordStore 16b
+openRecordStore 16b
+openRecordStore 161b
+openRecordStore 16b
+getRecord 16b_12
+Custom.jar.getResourceStream: f/ari_b.mg (1097)
+openRecordStore 16b
+getRecord 16b_12
+openRecordStore 16b
+getRecord 16b_11
+Custom.jar.getResourceStream: avatar.mg (34902)
+openRecordStore 16b
+getRecord 16b_11
+Custom.jar.getResourceStream: m/fsw.mg (193)
+Custom.jar.getResourceStream: crystalblue.mg (187)
+openRecordStore 161b
+Custom.jar.getResourceStream: m/ff.mg (299)
+Custom.jar.getResourceStream: m/sw.mg (349)
+Custom.jar.getResourceStream: m/af.mg (165)
+Custom.jar.getResourceStream: m/ih.mg (400)
+Custom.jar.getResourceStream: m/isw.mg (268)
+Custom.jar.getResourceStream: f/nb.mg (224)
+Custom.jar.getResourceStream: crystalblue.mg (187)
+openRecordStore 16b
+getRecord 16b_10
+openRecordStore 16b
+addRecord 16b_13
+addRecord 16b_14
+addRecord 16b_15
+addRecord 16b_16
+addRecord 16b_17
+addRecord 16b_18
+addRecord 16b_19
+addRecord 16b_20
+addRecord 16b_21
+addRecord 16b_22
+addRecord 16b_23
+addRecord 16b_24
+addRecord 16b_25
+addRecord 16b_26
+addRecord 16b_27
+addRecord 16b_28
+addRecord 16b_29
+Custom.jar.getResourceStream: bkboard.mg (4393)
+Custom.jar.getResourceStream: swordred.mg (309)
+Custom.jar.getResourceStream: /java/lang/.mg (null)
+>>java.lang.NullPointerException
+>>	at az.c(Unknown Source)
+>>	at az.b(Unknown Source)
+>>	at bs.<init>(Unknown Source)
+>>	at bs.b(Unknown Source)
+>>	at com.mic.smsgame.suquan.ab.<init>(Unknown Source)
+>>	at com.mic.smsgame.suquan.y.d(Unknown Source)
+>>	at bv.c(Unknown Source)
+>>	at ci.run(Unknown Source)
+>>	at java.lang.Thread.run(Thread.java:534)
+Custom.jar.getResourceStream: /java/lang/.mg (null)
+>>java.lang.NullPointerException
+>>	at az.c(Unknown Source)
+>>	at az.b(Unknown Source)
+>>	at bs.<init>(Unknown Source)
+>>	at bs.b(Unknown Source)
+>>	at com.mic.smsgame.suquan.ab.<init>(Unknown Source)
+>>	at com.mic.smsgame.suquan.y.d(Unknown Source)
+>>	at bv.c(Unknown Source)
+>>	at ci.run(Unknown Source)
+>>	at java.lang.Thread.run(Thread.java:534)
+Custom.jar.getResourceStream: /java/lang/.mg (null)
+>>java.lang.NullPointerException
+>>	at az.c(Unknown Source)
+>>	at az.b(Unknown Source)
+>>	at bs.<init>(Unknown Source)
+>>	at bs.b(Unknown Source)
+>>	at com.mic.smsgame.suquan.ab.<init>(Unknown Source)
+>>	at com.mic.smsgame.suquan.y.d(Unknown Source)
+>>	at bv.c(Unknown Source)
+>>	at ci.run(Unknown Source)
+>>	at java.lang.Thread.run(Thread.java:534)
+Custom.jar.getResourceStream: book.mg (345)
+Custom.jar.getResourceStream: explodebook.mg (712)
+Custom.jar.getResourceStream: explodebookx2.mg (1284)
+Custom.jar.getResourceStream: crystalviolet.mg (182)
+Custom.jar.getResourceStream: gold.mg (203)
+Custom.jar.getResourceStream: explodegold.mg (1021)
+Custom.jar.getResourceStream: explodegoldx2.mg (1127)
+Custom.jar.getResourceStream: crystalyellow.mg (185)
+Custom.jar.getResourceStream: yinyang.mg (271)
+Custom.jar.getResourceStream: explodeyinyang.mg (768)
+Custom.jar.getResourceStream: explodeyinyangx2.mg (1276)
+Custom.jar.getResourceStream: crystalblue.mg (187)
+Custom.jar.getResourceStream: heart.mg (228)
+Custom.jar.getResourceStream: explodeheart.mg (215)
+Custom.jar.getResourceStream: explodeheartx2.mg (1072)
+Custom.jar.getResourceStream: crystalred.mg (181)
+Custom.jar.getResourceStream: rice.mg (272)
+Custom.jar.getResourceStream: exploderice.mg (800)
+Custom.jar.getResourceStream: explodericex2.mg (858)
+Custom.jar.getResourceStream: crystalgreen.mg (182)
+Custom.jar.getResourceStream: sword.mg (253)
+Custom.jar.getResourceStream: explodesword.mg (207)
+Custom.jar.getResourceStream: /java/lang/.mg (null)
+>>java.lang.NullPointerException
+>>	at az.c(Unknown Source)
+>>	at az.b(Unknown Source)
+>>	at bs.<init>(Unknown Source)
+>>	at bs.b(Unknown Source)
+>>	at com.mic.smsgame.suquan.ab.<init>(Unknown Source)
+>>	at com.mic.smsgame.suquan.y.d(Unknown Source)
+>>	at bv.c(Unknown Source)
+>>	at ci.run(Unknown Source)
+>>	at java.lang.Thread.run(Thread.java:534)
+Custom.jar.getResourceStream: crystalgray.mg (177)
+Custom.jar.getResourceStream: star.mg (225)
+Custom.jar.getResourceStream: blood.mg (146)
+Custom.jar.getResourceStream: bloodext.mg (147)
+Custom.jar.getResourceStream: mana.mg (212)
+Custom.jar.getResourceStream: food.mg (146)
+Custom.jar.getResourceStream: bloodthrowaround.mg (888)
+Custom.jar.getResourceStream: arrowfocus1.mg (132)
+Custom.jar.getResourceStream: focus1.mg (139)
+Custom.jar.getResourceStream: arrowfocus2.mg (132)
+Custom.jar.getResourceStream: focus2.mg (139)
+Custom.jar.getResourceStream: zoomfocus1.mg (184)
+Custom.jar.getResourceStream: frame1.mg (581)
+Custom.jar.getResourceStream: frame2.mg (177)
+Custom.jar.getResourceStream: frame3.mg (164)
+Custom.jar.getResourceStream: focusitem.mg (270)
+Custom.jar.getResourceStream: numbersmall.mg (165)
+Custom.jar.getResourceStream: powerattack.mg (1183)
+Custom.jar.getResourceStream: defenceshield.mg (922)
+Custom.jar.getResourceStream: itemshops.mg (1673)
+openRecordStore 161b
+Custom.jar.getResourceStream: avatar.mg (34902)
+Custom.jar.getResourceStream: fireball.mg (3058)
+Custom.jar.getResourceStream: hellfire.mg (2936)
+Custom.jar.getResourceStream: chainlighting.mg (556)
+Custom.jar.getResourceStream: chainlightingpart1.mg (189)
+Custom.jar.getResourceStream: chainlightingpart2.mg (163)
+Custom.jar.getResourceStream: shieldlighting.mg (2605)
+Custom.jar.getResourceStream: blastlighting.mg (944)
+Custom.jar.getResourceStream: fireballicon.mg (680)
+Custom.jar.getResourceStream: meteoricon.mg (663)
+Custom.jar.getResourceStream: hellfireicon.mg (852)
+>>+++++++idMath+++++++++=1
+Custom.jar.getResourceStream: f/ari_b.mg (1097)
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+openRecordStore 16b
+addRecord 16b_30
+openRecordStore 16b
+getRecord 16b_10
+openRecordStore 16b
+addRecord 16b_31
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>start AI
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>********************************getScore**************************************
+>>********************************getScore**************************************
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>11	>>1	>>4	>>0	>>2	>>3	>>5	>>5	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>4	>>0	>>2	>>5	>>4	>>1	>>11	>>9	>>
+>>9	>>11	>>0	>>1	>>0	>>0	>>3	>>1	>>0	>>0	>>11	>>9	>>
+>>9	>>11	>>1	>>0	>>5	>>1	>>1	>>0	>>0	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>3	>>2	>>4	>>2	>>5	>>2	>>6	>>11	>>9	>>
+>>9	>>11	>>3	>>2	>>3	>>2	>>4	>>2	>>4	>>2	>>11	>>9	>>
+>>9	>>11	>>4	>>4	>>1	>>3	>>0	>>4	>>2	>>5	>>11	>>9	>>
+>>9	>>11	>>1	>>1	>>0	>>0	>>1	>>1	>>2	>>3	>>11	>>9	>>
+>>9	>>11	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>10	>>11	>>9	>>
+>>9	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>8	>>9	>>
+openRecordStore 161b
+>>Usinggggggggggsssssssssssssssssssssssssssssssssss
+openRecordStore 16b
+openRecordStore 161b
+Custom.jar.getResourceStream: f/nb.mg (224)
+Custom.jar.getResourceStream: numbersmall.mg (165)
+Custom.jar.getResourceStream: gold.mg (203)
+Custom.jar.getResourceStream: book.mg (345)
+Custom.jar.getResourceStream: m/isw.mg (268)
+Custom.jar.getResourceStream: m/bl.mg (159)
+Custom.jar.getResourceStream: f/divide.mg (123)
+Custom.jar.getResourceStream: m/lv.mg (159)
+Custom.jar.getResourceStream: crystalviolet.mg (182)
+Custom.jar.getResourceStream: avatar.mg (34902)
+openRecordStore 16b
+getRecord 16b_11
+>>clear
+openRecordStore 161b
+openRecordStore 16b
+openRecordStore 16b
+openRecordStore 161b
+openRecordStore 161b
+openRecordStore 16b
+openRecordStore 16b
+getRecord 16b_31
+openRecordStore 16b
+addRecord 16b_32
+Custom.jar.getResourceStream: m/hm.mg (205)
+Custom.jar.getResourceStream: m/m.mg (54305)
+Custom.jar.getResourceStream: m/b.mg (120)
+Custom.jar.getResourceStream: m/r.mg (493)
+Custom.jar.getResourceStream: m/mt1.mg (238)
+Custom.jar.getResourceStream: m/ar.mg (195)
+Custom.jar.getResourceStream: m/vk.mg (401)
+openRecordStore 16b
+getRecord 16b_32
+Custom.jar.getResourceStream: m/l.mg (156)
+openRecordStore 16b
+getRecord 16b_10
+openRecordStore 16b
+getRecord 16b_30
+openRecordStore 161b
+getRecord 161b_4
+openRecordStore 16b
+getRecord 16b_13
+getRecord 16b_14
+getRecord 16b_15
+getRecord 16b_16
+getRecord 16b_17
+getRecord 16b_18
+getRecord 16b_19
+getRecord 16b_20
+getRecord 16b_21
+getRecord 16b_22
+getRecord 16b_23
+getRecord 16b_24
+getRecord 16b_25
+getRecord 16b_26
+getRecord 16b_27
+getRecord 16b_28
+getRecord 16b_29
+Custom.jar.getResourceStream: f/ari_b.mg (1097)
+openRecordStore 16b
+getRecord 16b_12
+openRecordStore 16b
+getRecord 16b_11
+Custom.jar.getResourceStream: avatar.mg (34902)
+openRecordStore 16b
+getRecord 16b_30
+openRecordStore 161b
+getRecord 161b_4
+Custom.jar.getResourceStream: f/nb.mg (224)
+Custom.jar.getResourceStream: numbersmall.mg (165)
+Custom.jar.getResourceStream: gold.mg (203)
+Custom.jar.getResourceStream: book.mg (345)
+Custom.jar.getResourceStream: m/isw.mg (268)
+Custom.jar.getResourceStream: m/bl.mg (159)
+Custom.jar.getResourceStream: f/divide.mg (123)
+Custom.jar.getResourceStream: m/lv.mg (159)
+Custom.jar.getResourceStream: crystalviolet.mg (182)
+openRecordStore 16b
+getRecord 16b_11
+>>119 39
+openRecordStore 16b
+openRecordStore 16b
+getRecord 16b_30
+openRecordStore 16b
+openRecordStore 161b
+getRecord 161b_4
+openRecordStore 161b
+addRecord 161b_5
+openRecordStore 16b
+addRecord 16b_33
+addRecord 16b_34
+addRecord 16b_35
+addRecord 16b_36
+addRecord 16b_37
+addRecord 16b_38
+addRecord 16b_39
+addRecord 16b_40
+addRecord 16b_41
+addRecord 16b_42
+addRecord 16b_43
+addRecord 16b_44
+addRecord 16b_45
+addRecord 16b_46
+addRecord 16b_47
+addRecord 16b_48
+Custom.jar.getResourceStream: f/ari_b.mg (1097)
+openRecordStore 16b
+getRecord 16b_12
+openRecordStore 16b
+getRecord 16b_11
+openRecordStore 16b
+openRecordStore 16b
+openRecordStore 16b
+getRecord 16b_10
+openRecordStore 16b
+openRecordStore 161b
+getRecord 161b_5
+openRecordStore 161b
+openRecordStore 16b
+Custom.jar.getResourceStream: m/mt1.mg (238)
+>>org.eclipse.swt.SWTError: No more handles
+>>	at org.eclipse.swt.SWT.error(Unknown Source)
+>>	at org.eclipse.swt.SWT.error(Unknown Source)
+>>	at org.eclipse.swt.SWT.error(Unknown Source)
+>>	at org.eclipse.swt.graphics.Transform.<init>(Unknown Source)
+>>	at org.eclipse.swt.graphics.Transform.<init>(Unknown Source)
+>>	at emulator.graphics2D.swt.a.<init>(Unknown Source)
+>>	at emulator.graphics2D.swt.b.createGraphics(Unknown Source)
+>>	at javax.microedition.lcdui.Graphics.<init>(Unknown Source)
+>>	at emulator.i.run(Unknown Source)
+>>	at java.lang.Thread.run(Thread.java:534)

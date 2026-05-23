@@ -102,6 +102,20 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
                 SwitchTo(GameScreen.MainMenu);
         }
+        else if (CurrentScreen == GameScreen.Info || CurrentScreen == GameScreen.Guide || CurrentScreen == GameScreen.Author)
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Keypad5))
+            {
+                if (_pendingScreenAfterInfo.HasValue)
+                {
+                    var next = _pendingScreenAfterInfo.Value;
+                    _pendingScreenAfterInfo = null;
+                    SwitchTo(next);
+                }
+                else
+                    SwitchTo(GameScreen.MainMenu);
+            }
+        }
         else
         {
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
@@ -231,11 +245,31 @@ public class GameManager : MonoBehaviour
             else if (State.selectedStage <= State.unlockedLevel)
             {
                 State.StartReplayStage(State.selectedStage);
+                if (State.selectedStage % 5 == 0 && !State.endlessMode)
+                {
+                    ShowStoryPage(State.selectedStage / 5 - 1);
+                    return;
+                }
                 SwitchTo(GameScreen.Battle);
             }
             else State.message = "Chưa mở màn này.";
         }
     }
+
+    private void ShowStoryPage(int pageIdx)
+    {
+        if (pageIdx >= 0 && pageIdx < StoryData.HistoryPages.Length)
+        {
+            State.pageTitle = "LỊCH SỬ - " + WorldMapData.GetLocationName(pageIdx);
+            State.pageBody = StoryData.HistoryPages[pageIdx];
+            _pendingScreenAfterInfo = GameScreen.Battle;
+            SwitchTo(GameScreen.Info);
+        }
+    }
+
+    private GameScreen? _pendingScreenAfterInfo;
+
+
 
     private void HandleBattleInput()
     {
